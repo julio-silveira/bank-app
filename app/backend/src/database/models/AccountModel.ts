@@ -20,9 +20,7 @@ Account.init(
     }
   },
   {
-    underscored: true,
-    sequelize: db,
-    timestamps: false
+    sequelize: db
   }
 )
 

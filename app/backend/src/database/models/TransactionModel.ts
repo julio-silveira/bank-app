@@ -1,5 +1,4 @@
-import { DATE } from 'sequelize'
-import { Model, INTEGER } from 'sequelize'
+import { Model, INTEGER, DECIMAL, DATE } from 'sequelize'
 import db from '.'
 import Account from './AccountModel'
 
@@ -28,7 +27,7 @@ Transaction.init(
       allowNull: false
     },
     value: {
-      type: INTEGER,
+      type: DECIMAL(10, 2),
       allowNull: false
     },
     createdAt: {
@@ -42,7 +41,8 @@ Transaction.init(
   }
 )
 
-Transaction.hasMany(Account)
+Transaction.hasMany(Account, { foreignKey: 'debitedAccountId' })
+Transaction.hasMany(Account, { foreignKey: 'creditedAccountId' })
 Account.belongsTo(Transaction, { foreignKey: 'debitedAccountId' })
 Account.belongsTo(Transaction, { foreignKey: 'creditedAccountId' })
 

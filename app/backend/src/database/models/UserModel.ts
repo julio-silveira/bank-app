@@ -1,5 +1,6 @@
 import { Model, INTEGER, STRING } from 'sequelize'
 import db from '.'
+import Account from './AccountModel'
 
 class User extends Model {
   declare id: number
@@ -31,9 +32,11 @@ User.init(
   },
   {
     underscored: true,
-    sequelize: db,
-    timestamps: false
+    sequelize: db
   }
 )
+
+User.hasOne(Account, { foreignKey: 'accountId' })
+Account.belongsTo(User)
 
 export default User

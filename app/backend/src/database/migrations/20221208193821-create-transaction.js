@@ -4,37 +4,42 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return queryInterface.createTable('tasks', {
+    return queryInterface.createTable('transactions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
+      debitedAccountId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'users',
+          model: 'accounts',
           key: 'id'
-        },
-        field: 'user_id'
+        }
       },
-      status: {
+      creditedAccountId: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-        field: 'status'
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'accounts',
+          key: 'id'
+        }
       },
-      description: {
+      value: {
         allowNull: false,
-        type: Sequelize.STRING(1000),
-        field: 'description'
+        type: Sequelize.DECIMAL(10, 2),
+        field: 'value'
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     })
   },
 
   async down(queryInterface) {
-    return queryInterface.dropTable('users')
+    return queryInterface.dropTable('transactions')
   }
 }

@@ -13,13 +13,19 @@ module.exports = {
       },
       username: {
         allowNull: false,
-        type: Sequelize.STRING,
-        field: 'username'
+        type: Sequelize.STRING
       },
       passwordHash: {
         allowNull: false,
-        type: Sequelize.STRING,
-        field: 'password_hash'
+        type: Sequelize.STRING
+      },
+      accountId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        refernces: {
+          model: 'accounts',
+          key: 'id'
+        }
       }
     })
   },
