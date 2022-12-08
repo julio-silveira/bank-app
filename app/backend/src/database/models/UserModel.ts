@@ -1,13 +1,14 @@
 import { Model, INTEGER, STRING } from 'sequelize'
 import db from '.'
 
-class Users extends Model {
+class User extends Model {
   declare id: number
   declare username: string
   declare password: string
+  declare accountId: number
 }
 
-Users.init(
+User.init(
   {
     id: {
       type: INTEGER,
@@ -22,14 +23,17 @@ Users.init(
     passwordHash: {
       type: STRING(30),
       allowNull: false
+    },
+    accountId: {
+      type: INTEGER,
+      allowNull: false
     }
   },
   {
     underscored: true,
     sequelize: db,
-    modelName: 'users',
     timestamps: false
   }
 )
 
-export default Users
+export default User

@@ -1,5 +1,5 @@
 import Task from '../interfaces/task.interface'
-import Tasks from '../database/models/TaskModel'
+import Tasks from '../database/models/TransactionModel'
 import { BadRequestError, NotFoundError } from 'restify-errors'
 
 const properties = ['userId', 'status', 'description']

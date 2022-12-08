@@ -1,5 +1,5 @@
 import Users from './database/models/UserModel';
-import Tasks from './database/models/TaskModel';
+import Tasks from './database/models/TransactionModel';
 
 (async () => {
 

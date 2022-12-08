@@ -1,10 +1,9 @@
-
 interface Token {
   data: {
-    username: string;
+    username: string
   }
-  iat: number;
-  exp: number;
+  iat: number
+  exp: number
 }
 
 export default Token
