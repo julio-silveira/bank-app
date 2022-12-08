@@ -1,8 +1,8 @@
 version: '3.9'
-name: typescript-boilerplate
+name: NG.CASH-WALLET
 services:
   frontend:
-    container_name: typescript-boilerplate-frontend
+    container_name: NG.CASH-frontend
     build: ./frontend
     ports:
       - 3000:3000
@@ -15,7 +15,7 @@ services:
       timeout: 10s
       retries: 5
   backend:
-    container_name: typescript-boilerplate-backend
+    container_name: NG.CASH-backend
     build: ./backend
     ports:
       - 8000:8000
@@ -30,20 +30,47 @@ services:
       test: ["CMD", "lsof", "-t", "-i:8000"]
       timeout: 10s
       retries: 5
+    networks:
+      - postgres
   db:
-    image: mysql:8.0.21
-    container_name: typescript-boilerplate-db
+    image: postgres:14.1-alpine
+    container_name: NG.CASH-db
     platform: linux/x86_64
-    volumes:
-      - .db_data:/var/lib/mysql
-    ports:
-      - 3306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     restart: 'always'
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "pg_isready", "-U", "postgres"]
       timeout: 10s
       retries: 5
+    networks:
+      - postgres
     cap_add:
       - SYS_NICE
+
+  pgadmin:
+    container_name: NG.CASH-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin1234"
+    volumes:
+     - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+ db-data:
+ pgadmin-data:
+networks:
+  postgres:
+    driver: bridge
