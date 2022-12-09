@@ -29,13 +29,11 @@ Transaction.init(
     value: {
       type: DECIMAL(10, 2),
       allowNull: false
-    },
-    createdAt: {
-      type: DATE,
-      allowNull: false
     }
   },
   {
+    timestamps: true,
+    updatedAt: false,
     underscored: true,
     sequelize: db
   }
@@ -43,6 +41,7 @@ Transaction.init(
 
 Transaction.hasMany(Account, { foreignKey: 'debitedAccountId' })
 Transaction.hasMany(Account, { foreignKey: 'creditedAccountId' })
+
 Account.belongsTo(Transaction, { foreignKey: 'debitedAccountId' })
 Account.belongsTo(Transaction, { foreignKey: 'creditedAccountId' })
 

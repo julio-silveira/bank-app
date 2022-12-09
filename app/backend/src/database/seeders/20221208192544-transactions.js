@@ -6,28 +6,28 @@ module.exports = {
   up: async (queryInterface) => {
     await queryInterface.bulkInsert('transactions', [
       {
-        debitedAccountId: 1,
-        creditedAccountId: 2,
+        debited_account_id: 1,
+        credited_account_id: 2,
         value: 10,
-        createdAt: '2022-12-08'
+        created_at: '2022-12-08'
       },
       {
-        debitedAccountId: 2,
-        creditedAccountId: 1,
+        debited_account_id: 2,
+        credited_account_id: 1,
         value: 5,
-        createdAt: '2022-12-08'
+        created_at: '2022-12-08'
       },
       {
-        debitedAccountId: 1,
-        creditedAccountId: 2,
+        debited_account_id: 1,
+        credited_account_id: 2,
         value: 15,
-        createdAt: '2022-12-08'
+        created_at: '2022-12-08'
       },
       {
-        debitedAccountId: 2,
-        creditedAccountId: 1,
+        debited_account_id: 2,
+        credited_account_id: 1,
         value: 25,
-        createdAt: '2022-12-08'
+        created_at: '2022-12-08'
       }
     ])
   },

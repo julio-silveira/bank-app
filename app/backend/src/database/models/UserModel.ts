@@ -18,11 +18,11 @@ User.init(
       autoIncrement: true
     },
     username: {
-      type: STRING(30),
+      type: STRING,
       allowNull: false
     },
     passwordHash: {
-      type: STRING(30),
+      type: STRING,
       allowNull: false
     },
     accountId: {
@@ -32,11 +32,12 @@ User.init(
   },
   {
     underscored: true,
+    timestamps: false,
     sequelize: db
   }
 )
 
-User.hasOne(Account, { foreignKey: 'accountId' })
+User.hasOne(Account)
 Account.belongsTo(User)
 
 export default User

@@ -17,12 +17,14 @@ module.exports = {
       },
       passwordHash: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        field: 'password_hash'
       },
       accountId: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        refernces: {
+        field: 'account_id',
+        references: {
           model: 'accounts',
           key: 'id'
         }

@@ -13,6 +13,7 @@ export default class UserControler {
 
   public userLogin = async (req: Request, res: Response) => {
     const { username, password } = req.body
+    console.log(username, password)
     if (!username || !password)
       throw new BadRequestError(
         'O nome de usuário/senha não podem estar em vazios'
