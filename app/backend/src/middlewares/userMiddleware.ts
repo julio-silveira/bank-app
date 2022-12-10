@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import User from '../interfaces/user.interface'
 import Users from '../database/models/UserModel'
 import { BadRequestError } from 'restify-errors'
-import Account from '../database/models/AccountModel';
+import Account from '../database/models/AccountModel'
 
 class UserMiddleware {
   public userModel = Users
@@ -36,6 +36,20 @@ class UserMiddleware {
       throw new BadRequestError(
         'Nome de usuário indisponível, por favor, escolha um diferente'
       )
+    next()
+  }
+  public loginCredentials = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { username, password } = req.body
+
+    if (username === undefined || password === undefined) {
+      throw new BadRequestError(
+        'Os campos de usuário/senhas não podem ser vazios'
+      )
+    }
     next()
   }
 }

@@ -11,7 +11,11 @@ const usersController = new UserControler()
 
 const userMiddleware = new UserMiddleware()
 
-router.post(LOGIN_ROUTE, usersController.userLogin)
+router.post(
+  LOGIN_ROUTE,
+  userMiddleware.loginCredentials,
+  usersController.userLogin
+)
 router.post(
   CREATE_USER_ROUTE,
   userMiddleware.userRegisterCredentials,

@@ -1,7 +1,11 @@
 import { Request, Response } from 'express'
 import statusCodes from '../statusCodes'
 import UserService from '../services/users.service'
-import { BadRequestError, UnauthorizedError } from 'restify-errors'
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError
+} from 'restify-errors'
 import { hash, compare } from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
@@ -20,7 +24,7 @@ export default class UserControler {
       )
     const user = await this.userService.getUser(username)
 
-    if (!user) throw new UnauthorizedError('Usuário não encontrado')
+    if (!user) throw new NotFoundError('Usuário não encontrado')
     const comparePassword = await compare(password, user.passwordHash)
 
     if (!comparePassword) {
