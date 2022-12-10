@@ -31,13 +31,14 @@ User.init(
     }
   },
   {
+    modelName: 'users',
     underscored: true,
     timestamps: false,
     sequelize: db
   }
 )
 
-User.hasOne(Account)
-Account.belongsTo(User)
+Account.hasOne(User)
+User.belongsTo(Account)
 
 export default User

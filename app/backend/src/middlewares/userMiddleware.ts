@@ -2,11 +2,13 @@ import { Request, Response, NextFunction } from 'express'
 import User from '../interfaces/user.interface'
 import Users from '../database/models/UserModel'
 import { BadRequestError } from 'restify-errors'
+import Account from '../database/models/AccountModel';
 
 class UserMiddleware {
   public userModel = Users
+  public accountModel = Account
 
-  public userCredentials = async (
+  public userRegisterCredentials = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -30,10 +32,12 @@ class UserMiddleware {
       raw: true
     })
 
-    if (user !== undefined)
+    if (user !== null)
       throw new BadRequestError(
         'Nome de usuário indisponível, por favor, escolha um diferente'
       )
     next()
   }
 }
+
+export default UserMiddleware

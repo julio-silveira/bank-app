@@ -1,5 +1,6 @@
-import { Model, INTEGER, DECIMAL } from 'sequelize'
+import { Model, INTEGER, NUMBER } from 'sequelize'
 import db from '.'
+import Transaction from './TransactionModel'
 
 class Account extends Model {
   declare id: number
@@ -15,11 +16,13 @@ Account.init(
       autoIncrement: true
     },
     balance: {
-      type: DECIMAL(10, 2),
+      type: NUMBER,
       allowNull: false
     }
   },
   {
+    modelName: 'accounts',
+    freezeTableName: true,
     timestamps: false,
     sequelize: db
   }

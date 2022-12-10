@@ -1,4 +1,4 @@
-import { Model, INTEGER, DECIMAL, DATE } from 'sequelize'
+import { Model, INTEGER, DECIMAL } from 'sequelize'
 import db from '.'
 import Account from './AccountModel'
 
@@ -32,6 +32,7 @@ Transaction.init(
     }
   },
   {
+    modelName: 'transactions',
     timestamps: true,
     updatedAt: false,
     underscored: true,
@@ -39,10 +40,18 @@ Transaction.init(
   }
 )
 
-Transaction.hasMany(Account, { foreignKey: 'debitedAccountId' })
-Transaction.hasMany(Account, { foreignKey: 'creditedAccountId' })
+Account.hasMany(Transaction, {
+  foreignKey: 'debitedAccountId'
+})
+Account.hasMany(Transaction, {
+  foreignKey: 'creditedAccountId'
+})
 
-Account.belongsTo(Transaction, { foreignKey: 'debitedAccountId' })
-Account.belongsTo(Transaction, { foreignKey: 'creditedAccountId' })
+Transaction.belongsTo(Account, {
+  foreignKey: 'debitedAccountId'
+})
+Transaction.belongsTo(Account, {
+  foreignKey: 'creditedAccountId'
+})
 
 export default Transaction

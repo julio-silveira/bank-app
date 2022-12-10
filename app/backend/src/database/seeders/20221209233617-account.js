@@ -10,6 +10,9 @@ module.exports = {
       },
       {
         balance: 100
+      },
+      {
+        balance: 100
       }
     ])
   },
