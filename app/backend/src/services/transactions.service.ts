@@ -1,48 +1,49 @@
-import { Op } from 'sequelize'
-import Task from '../interfaces/task.interface'
-import Transactions from '../database/models/TransactionModel'
+import { Op, Sequelize, Transaction } from 'sequelize'
+import sequelize from '../database/models'
+import ITransaction from '../interfaces/transaction.interface'
+import TransactionsModel from '../database/models/TransactionModel'
+import AccountModel from '../database/models/AccountModel'
 import { BadRequestError, NotFoundError } from 'restify-errors'
 
-// const properties = ['userId', 'status', 'description']
-
 class TaskServices {
-  public transactionsModel = Transactions
+  public transactionsModel = TransactionsModel
+  public accountModel = AccountModel
 
-  // static validateProperties(task: Task): [boolean, string | null] {
-  //   for (let i = 0; i < properties.length; i += 1) {
-  //     if (!Object.prototype.hasOwnProperty.call(task, properties[i])) {
-  //       return [false, properties[i]]
-  //     }
-  //   }
-  //   return [true, null]
-  // }
+  private checkBalance = async (
+    debitedAccountId: number,
+    creditedAccountId: number,
+    value: string
+  ) => {
+    const debitedAccount = await this.accountModel.findOne({
+      where: { id: debitedAccountId }
+    })
+    const creditedAccount = await this.accountModel.findOne({
+      where: { id: creditedAccountId }
+    })
 
-  // static validateValues(task: Task): [boolean, string | null] {
-  //   const entries = Object.entries(task)
-  //   for (let i = 0; i < entries.length; i += 1) {
-  //     const [property, value] = entries[i]
-  //     if (!value && property !== properties[1]) {
-  //       return [false, property]
-  //     }
-  //   }
-  //   return [true, null]
-  // }
+    if (debitedAccount === null)
+      throw new NotFoundError('Conta não encontrada!')
 
-  // static validationTask(task: Task): void | string {
-  //   let [valid, property] = TaskServices.validateProperties(task)
+    if (creditedAccount === null)
+      throw new NotFoundError('Conta de destino não encontrada')
 
-  //   if (!valid) {
-  //     return `O campo ${property} é obrigatório.`
-  //   }
-  //   ;[valid, property] = TaskServices.validateValues(task)
+    const debitedAccountBalance = parseFloat(debitedAccount.toJSON().balance)
+    const creditedAccountBalance = parseFloat(creditedAccount.toJSON().balance)
+    const transactionValue = parseFloat(value)
 
-  //   if (!valid) {
-  //     return `O campo ${property} não pode ser nulo ou vazio.`
-  //   }
-  // }
+    if (debitedAccountBalance < transactionValue)
+      throw new BadRequestError('Saldo Insuficiente')
 
-  public async findAllTransactions(accountId: number): Promise<any> {
-    const transactions = await this.transactionsModel.findAll({
+    const newBalances = {
+      creditedBalance: creditedAccountBalance + transactionValue,
+      debitedBalance: debitedAccountBalance - transactionValue
+    }
+
+    return newBalances
+  }
+
+  public async findAllTransactions(accountId: number): Promise<ITransaction> {
+    const accountTransactions = await this.transactionsModel.findAll({
       where: {
         [Op.or]: [
           { debitedAccountId: accountId },
@@ -51,23 +52,43 @@ class TaskServices {
       },
       raw: true
     })
-    return transactions as unknown
+    return accountTransactions as unknown as ITransaction
   }
-  // public async findOneTask(userId: number, taskId: number): Promise<Task> {
-  //   const task = await this.tasksModel.findOne({
-  //     where: { userId, id: taskId },
-  //     raw: true
-  //   })
-  //   if (task === null) throw new NotFoundError('Task not found!')
-  //   return task as unknown as Task
-  // }
 
-  // public async create(task: Task): Promise<Task> {
-  //   const isValidTask = TaskServices.validationTask(task)
-  //   if (typeof isValidTask === 'string') throw new BadRequestError(isValidTask)
-  //   const newTask = this.tasksModel.create({ ...task })
-  //   return newTask as unknown as Task
-  // }
+  public async create(accountTransaction: ITransaction): Promise<void> {
+    const { debitedAccountId, creditedAccountId, value } = accountTransaction
+    const { creditedBalance, debitedBalance } = await this.checkBalance(
+      debitedAccountId,
+      creditedAccountId,
+      value
+    )
+
+    try {
+      await sequelize.transaction(async (t: Transaction) => {
+        await this.accountModel.update(
+          { balance: debitedBalance },
+          { where: { id: debitedAccountId }, transaction: t }
+        )
+        await this.accountModel.update(
+          { balance: creditedBalance },
+          { where: { id: creditedAccountId }, transaction: t }
+        )
+        await this.transactionsModel.create(
+          {
+            debitedAccountId,
+            creditedAccountId,
+            value
+          },
+          { transaction: t }
+        )
+      })
+    } catch (error) {
+      console.log(error)
+    }
+    // if (typeof isValidTask === 'string') throw new BadRequestError(isValidTask)
+    // const newTask = this.tasksModel.create({ ...task })
+    // return newTask as unknown as Task
+  }
 
   // public async update(
   //   userId: number,
