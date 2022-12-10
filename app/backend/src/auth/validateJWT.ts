@@ -18,7 +18,7 @@ class ValidateJWT {
   ) => {
     const { authorization } = req.headers
 
-    const userId = Number(req.params.userId)
+    const accountId = Number(req.params.accountId)
 
     if (!authorization) throw new NotFoundError('Token não encontrado')
 
@@ -28,9 +28,10 @@ class ValidateJWT {
       where: { username: decoded.data.username },
       raw: true
     })
+    console.log(user?.accountId === accountId)
 
     if (!user) throw new NotFoundError('Usuário não encontrado')
-    if (user.id !== userId)
+    if (user.accountId !== accountId)
       throw new UnauthorizedError('Você não possui acesso a essa página')
 
     next()

@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express'
-import User from '../interfaces/user.interface'
 import Users from '../database/models/UserModel'
 import { BadRequestError } from 'restify-errors'
 import Account from '../database/models/AccountModel'
