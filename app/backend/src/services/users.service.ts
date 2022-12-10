@@ -1,6 +1,8 @@
 import iUser from '../interfaces/user.interface'
 import User from '../database/models/UserModel'
 import Account from '../database/models/AccountModel'
+import sequelize from '../database/models'
+import { Transaction } from 'sequelize'
 
 class UserService {
   public usersModel = User
@@ -19,13 +21,26 @@ class UserService {
     return user as unknown as iUser
   }
 
-  public async createUser(userData: iUser): Promise<iUser> {
-    const newAccount = await this.accountModel.create({ balance: 100 })
-    const newUser = await this.usersModel.create({
-      ...userData,
-      accountId: newAccount.toJSON().id
-    })
-    return newUser as unknown as iUser
+  public async createUser(userData: iUser): Promise<iUser | void> {
+    try {
+      const newUser = await sequelize.transaction(async (t: Transaction) => {
+        const newAccount = await this.accountModel.create(
+          { balance: 100 },
+          { transaction: t }
+        )
+        const data = await this.usersModel.create(
+          {
+            ...userData,
+            accountId: newAccount.toJSON().id
+          },
+          { transaction: t }
+        )
+        return data
+      })
+      return newUser as unknown as iUser
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 

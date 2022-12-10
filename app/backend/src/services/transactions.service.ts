@@ -1,4 +1,4 @@
-import { Op, Sequelize, Transaction } from 'sequelize'
+import { Op, Transaction } from 'sequelize'
 import sequelize from '../database/models'
 import ITransaction from '../interfaces/transaction.interface'
 import TransactionsModel from '../database/models/TransactionModel'
@@ -42,7 +42,7 @@ class TaskServices {
     return newBalances
   }
 
-  public async findAllTransactions(accountId: number): Promise<ITransaction> {
+  public async findAll(accountId: number): Promise<ITransaction> {
     const accountTransactions = await this.transactionsModel.findAll({
       where: {
         [Op.or]: [
@@ -85,28 +85,7 @@ class TaskServices {
     } catch (error) {
       console.log(error)
     }
-    // if (typeof isValidTask === 'string') throw new BadRequestError(isValidTask)
-    // const newTask = this.tasksModel.create({ ...task })
-    // return newTask as unknown as Task
   }
-
-  // public async update(
-  //   userId: number,
-  //   taskId: number,
-  //   task: Task
-  // ): Promise<void> {
-  //   const isValidTask = TaskServices.validationTask(task)
-
-  //   if (typeof isValidTask === 'string') throw new BadRequestError(isValidTask)
-
-  //   const { id } = await this.findOneTask(userId, taskId)
-  //   this.tasksModel.update({ ...task }, { where: { id } })
-  // }
-
-  // public async remove(userId: number, taskId: number): Promise<void> {
-  //   const { id } = await this.findOneTask(userId, taskId)
-  //   this.tasksModel.destroy({ where: { id } })
-  // }
 }
 
 export default TaskServices
