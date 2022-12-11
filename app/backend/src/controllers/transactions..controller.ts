@@ -7,7 +7,7 @@ export default class TaskControler {
 
   public getAll = async (req: Request, res: Response) => {
     const accountId = Number(req.params.accountId)
-    const transactions = await this.transactionServices.findAll(accountId)
+    const transactions = await this.transactionServices.getAll(accountId)
     res.status(statusCodes.OK).json(transactions)
   }
 

@@ -28,8 +28,6 @@ class ValidateJWT {
       where: { username: decoded.data.username },
       raw: true
     })
-    console.log(user?.accountId === accountId)
-
     if (!user) throw new NotFoundError('Usuário não encontrado')
     if (user.accountId !== accountId)
       throw new UnauthorizedError('Você não possui acesso a essa página')

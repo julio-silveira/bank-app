@@ -30,7 +30,6 @@ class TransactionMiddleware {
     }
 
     req.body = { creditedAccountId: user?.accountId, value }
-
     next()
   }
 }

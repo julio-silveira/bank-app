@@ -1,13 +1,33 @@
-import { Op, Transaction } from 'sequelize'
+import { QueryTypes, Transaction } from 'sequelize'
 import sequelize from '../database/models'
 import ITransaction from '../interfaces/transaction.interface'
 import TransactionsModel from '../database/models/TransactionModel'
 import AccountModel from '../database/models/AccountModel'
 import { BadRequestError, NotFoundError } from 'restify-errors'
+import User from '../database/models/UserModel'
+
+const baseQuery = `
+SELECT
+  t.id as transactionId,
+  d.username as debitedUsername,
+  c.username as creditedUsername,
+  t.value,
+  t.created_at
+FROM transactions as t
+LEFT JOIN users as d
+  ON debited_account_id = d.account_id
+LEFT JOIN users as c
+  ON credited_account_id = c.account_id
+WHERE `
+
+const debitedFilter = `d.account_id = :accountId`
+const creditedFilter = `c.account_id = :accountId`
+const dateQuery = `t.created_at >= :dateFilter`
 
 class TaskServices {
   public transactionsModel = TransactionsModel
   public accountModel = AccountModel
+  public userModel = User
 
   private checkBalance = async (
     debitedAccountId: number,
@@ -42,18 +62,22 @@ class TaskServices {
     return newBalances
   }
 
-  public async findAll(accountId: number): Promise<ITransaction> {
-    const accountTransactions = await this.transactionsModel.findAll({
-      where: {
-        [Op.or]: [
-          { debitedAccountId: accountId },
-          { creditedAccountId: accountId }
-        ]
-      },
-      raw: true
-    })
+  public async getAll(accountId: number): Promise<ITransaction> {
+    const accountTransactions = sequelize.query(
+      `${baseQuery} ${debitedFilter} OR ${creditedFilter}`,
+      {
+        replacements: { accountId },
+        type: QueryTypes.SELECT
+      }
+    )
     return accountTransactions as unknown as ITransaction
   }
+
+  public async findAll(
+    accountId: number,
+    dateFilter: string | undefined,
+    operationFilter: string
+  ) {}
 
   public async create(accountTransaction: ITransaction): Promise<void> {
     const { debitedAccountId, creditedAccountId, value } = accountTransaction
