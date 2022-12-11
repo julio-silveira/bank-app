@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express'
 import statusCodes from './statusCodes'
 import 'express-async-errors'
 import UserRoutes from './routes/user.routes'
-import TaskRoutes from './routes/tasks.routes'
+import TransactionRoutes from './routes/transactions.routes'
 import cors from 'cors'
 
 const app = express()
@@ -12,11 +12,11 @@ app.use(express.json())
 const PORT = 8000
 
 app.get('/', (req: Request, res: Response) => {
-  res.status(statusCodes.OK).send('Express + TypeScript')
+  res.status(statusCodes.OK).send('NG.CASH SERVER ON')
 })
 app.use(cors())
 app.use(UserRoutes)
-app.use(TaskRoutes)
+app.use(TransactionRoutes)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   const { name, message, details } = err as any

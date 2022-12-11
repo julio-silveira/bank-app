@@ -1,7 +1,7 @@
 interface User {
-  id?: number;
-  username: string;
-  passwordHash: string;
+  id?: number
+  username: string
+  passwordHash: string
 }
 
-export default User;
+export default User

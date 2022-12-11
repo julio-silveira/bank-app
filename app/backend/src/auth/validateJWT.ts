@@ -18,7 +18,9 @@ class ValidateJWT {
   ) => {
     const { authorization } = req.headers
 
+    const accountId = Number(req.params.accountId)
     const userId = Number(req.params.userId)
+    console.log(!Number.isNaN(accountId), !Number.isNaN(userId))
 
     if (!authorization) throw new NotFoundError('Token não encontrado')
 
@@ -28,11 +30,13 @@ class ValidateJWT {
       where: { username: decoded.data.username },
       raw: true
     })
-
     if (!user) throw new NotFoundError('Usuário não encontrado')
-    if (user.id !== userId)
-      throw new UnauthorizedError('Você não possui acesso a essa página')
-
+    if (user.accountId !== accountId && !Number.isNaN(accountId)) {
+      throw new UnauthorizedError('Acesso Restrito')
+    }
+    if (user.id !== userId && !Number.isNaN(userId)) {
+      throw new UnauthorizedError('Acesso Restrito')
+    }
     next()
   }
 }

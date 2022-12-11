@@ -2,6 +2,7 @@ node_modules/
 .env
 build
 .db_data
+db-data
 
 # Logs
 logs

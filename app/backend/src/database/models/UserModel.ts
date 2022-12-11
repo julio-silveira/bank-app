@@ -1,13 +1,15 @@
 import { Model, INTEGER, STRING } from 'sequelize'
 import db from '.'
+import Account from './AccountModel'
 
-class Users extends Model {
+class User extends Model {
   declare id: number
   declare username: string
   declare password: string
+  declare accountId: number
 }
 
-Users.init(
+User.init(
   {
     id: {
       type: INTEGER,
@@ -16,20 +18,27 @@ Users.init(
       autoIncrement: true
     },
     username: {
-      type: STRING(30),
+      type: STRING,
       allowNull: false
     },
     passwordHash: {
-      type: STRING(30),
+      type: STRING,
+      allowNull: false
+    },
+    accountId: {
+      type: INTEGER,
       allowNull: false
     }
   },
   {
-    underscored: true,
-    sequelize: db,
     modelName: 'users',
-    timestamps: false
+    underscored: true,
+    timestamps: false,
+    sequelize: db
   }
 )
 
-export default Users
+Account.hasOne(User)
+User.belongsTo(Account)
+
+export default User
