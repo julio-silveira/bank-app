@@ -29,6 +29,7 @@ router.post(
 router.post(
   TRANSACTION_WITH_FILTERS_ROUTE,
   validateJWT.tokenAuth,
+  transactionMiddleware.filtersCheck,
   transactionController.getAllWithFilters
 )
 

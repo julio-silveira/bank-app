@@ -19,7 +19,7 @@ export interface ITransactionList {
 export interface ITransactionFilters {
   accountId: number
   dateFilter: false | string
-  operationTypeFilter: false | 'credit' | 'debit'
+  typeFilter: false | 'credit' | 'debit'
 }
 
 export interface IQueryBuilder {

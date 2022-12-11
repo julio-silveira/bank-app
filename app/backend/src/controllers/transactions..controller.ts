@@ -14,11 +14,11 @@ export default class TaskControler {
 
   public getAllWithFilters = async (req: Request, res: Response) => {
     const accountId = Number(req.params.accountId)
-    const { dateFilter, operationTypeFilter } = req.body
+    const { dateFilter, typeFilter } = req.body
     const transactionData: ITransactionFilters = {
       accountId,
       dateFilter,
-      operationTypeFilter
+      typeFilter
     }
     const transactions = await this.transactionServices.getAllWithFilters(
       transactionData

@@ -70,46 +70,37 @@ class TaskServices {
   private queryBuilder = (
     transactionData: ITransactionFilters
   ): IQueryBuilder => {
-    const { accountId, dateFilter, operationTypeFilter } = transactionData
+    const { accountId, dateFilter, typeFilter } = transactionData
     let rawQuery = ''
     let options = {
       replacements: {},
       type: QueryTypes.SELECT
     }
-    if (dateFilter === false && operationTypeFilter === 'credit') {
+    if (dateFilter === false && typeFilter === 'credit') {
       rawQuery = `${baseQuery} ${creditQuery}`
       options = {
         replacements: { accountId },
         type: QueryTypes.SELECT
       }
-    } else if (dateFilter === false && operationTypeFilter === 'debit') {
+    } else if (dateFilter === false && typeFilter === 'debit') {
       rawQuery = `${baseQuery} ${debitQuery}`
       options = {
         replacements: { accountId },
         type: QueryTypes.SELECT
       }
-    } else if (
-      typeof dateFilter === 'string' &&
-      operationTypeFilter === 'credit'
-    ) {
+    } else if (typeof dateFilter === 'string' && typeFilter === 'credit') {
       rawQuery = `${baseQuery} ${dateQuery} AND ${creditQuery}`
       options = {
         replacements: { dateFilter, accountId },
         type: QueryTypes.SELECT
       }
-    } else if (
-      typeof dateFilter === 'string' &&
-      operationTypeFilter === 'debit'
-    ) {
+    } else if (typeof dateFilter === 'string' && typeFilter === 'debit') {
       rawQuery = `${baseQuery} ${dateQuery} AND ${debitQuery}`
       options = {
         replacements: { dateFilter, accountId },
         type: QueryTypes.SELECT
       }
-    } else if (
-      typeof dateFilter === 'string' &&
-      operationTypeFilter === false
-    ) {
+    } else if (typeof dateFilter === 'string' && typeFilter === false) {
       ;(rawQuery = `${baseQuery} ${dateQuery} AND ( ${creditQuery} OR ${debitQuery})`),
         (options = {
           replacements: { dateFilter, accountId },
@@ -135,6 +126,9 @@ class TaskServices {
     transactionData: ITransactionFilters
   ): Promise<ITransactionList[] | undefined> {
     const { rawQuery, options } = this.queryBuilder(transactionData)
+    if (rawQuery === '') {
+      throw new BadRequestError('Erro com a solicitação')
+    }
 
     const accountTransactions = await sequelize.query(rawQuery, options)
     const nTransactions = Number(accountTransactions.length)
