@@ -1,4 +1,4 @@
-interface Transaction {
+export interface ITransaction {
   id?: number
   debitedAccountId: number
   creditedAccountId: number
@@ -6,4 +6,16 @@ interface Transaction {
   createdAt?: string
 }
 
-export default Transaction
+export interface ITransactionList {
+  id: number
+  debitedusername: string
+  creditedusername: string
+  value: string
+  created_at: string
+}
+
+export interface ITransactionFilters {
+  accountId: string
+  dateFilter: false | string
+  operationTypeFilter: false | 'credit' | 'debit'
+}

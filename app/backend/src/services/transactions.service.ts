@@ -1,6 +1,10 @@
 import { QueryTypes, Transaction } from 'sequelize'
 import sequelize from '../database/models'
-import ITransaction from '../interfaces/transaction.interface'
+import {
+  ITransaction,
+  ITransactionFilters,
+  ITransactionList
+} from '../interfaces/transaction.interface'
 import TransactionsModel from '../database/models/TransactionModel'
 import AccountModel from '../database/models/AccountModel'
 import { BadRequestError, NotFoundError } from 'restify-errors'
@@ -8,7 +12,7 @@ import User from '../database/models/UserModel'
 
 const baseQuery = `
 SELECT
-  t.id as transactionId,
+  t.id,
   d.username as debitedUsername,
   c.username as creditedUsername,
   t.value,
@@ -20,8 +24,8 @@ LEFT JOIN users as c
   ON credited_account_id = c.account_id
 WHERE `
 
-const debitedFilter = `d.account_id = :accountId`
-const creditedFilter = `c.account_id = :accountId`
+const debitQuery = `d.account_id = :accountId`
+const creditQuery = `c.account_id = :accountId`
 const dateQuery = `t.created_at >= :dateFilter`
 
 class TaskServices {
@@ -62,22 +66,70 @@ class TaskServices {
     return newBalances
   }
 
-  public async getAll(accountId: number): Promise<ITransaction> {
+  public async getAll(accountId: number): Promise<ITransactionList[]> {
     const accountTransactions = sequelize.query(
-      `${baseQuery} ${debitedFilter} OR ${creditedFilter}`,
+      `${baseQuery} ${debitQuery} OR ${creditQuery}`,
       {
         replacements: { accountId },
         type: QueryTypes.SELECT
       }
     )
-    return accountTransactions as unknown as ITransaction
+    return accountTransactions as unknown as ITransactionList[]
   }
 
-  public async findAll(
-    accountId: number,
-    dateFilter: string | undefined,
-    operationFilter: string
-  ) {}
+  public async getAllWithFilters(transactionData: ITransactionFilters) {
+    const { accountId, dateFilter, operationTypeFilter } = transactionData
+    if (dateFilter === false) {
+      if (operationTypeFilter === 'credit') {
+        const accountTransactions = sequelize.query(
+          `${baseQuery} ${creditQuery}`,
+          {
+            replacements: { accountId },
+            type: QueryTypes.SELECT
+          }
+        )
+        return accountTransactions as unknown as ITransactionList[]
+      } else if (operationTypeFilter === 'debit') {
+        const accountTransactions = sequelize.query(
+          `${baseQuery} ${debitQuery}`,
+          {
+            replacements: { accountId },
+            type: QueryTypes.SELECT
+          }
+        )
+        return accountTransactions as unknown as ITransactionList[]
+      }
+    } else {
+      if (operationTypeFilter === 'credit') {
+        const accountTransactions = sequelize.query(
+          `${baseQuery} ${dateQuery} AND ${creditQuery}`,
+          {
+            replacements: { dateFilter, accountId },
+            type: QueryTypes.SELECT
+          }
+        )
+        return accountTransactions as unknown as ITransactionList[]
+      } else if (operationTypeFilter === 'debit') {
+        const accountTransactions = sequelize.query(
+          `${baseQuery} ${dateQuery} AND ${debitQuery}`,
+          {
+            replacements: { dateFilter, accountId },
+            type: QueryTypes.SELECT
+          }
+        )
+        return accountTransactions as unknown as ITransactionList[]
+      } else if (operationTypeFilter === false) {
+        const accountTransactions = sequelize.query(
+          `${baseQuery} ${dateQuery} AND ( ${creditQuery} OR ${debitQuery})`,
+          {
+            replacements: { dateFilter, accountId },
+            type: QueryTypes.SELECT
+          }
+        )
+        return accountTransactions as unknown as ITransactionList[]
+      }
+    }
+  }
 
   public async create(accountTransaction: ITransaction): Promise<void> {
     const { debitedAccountId, creditedAccountId, value } = accountTransaction
