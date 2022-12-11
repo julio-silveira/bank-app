@@ -1,3 +1,5 @@
+import { QueryTypes } from 'sequelize'
+
 export interface ITransaction {
   id?: number
   debitedAccountId: number
@@ -15,7 +17,15 @@ export interface ITransactionList {
 }
 
 export interface ITransactionFilters {
-  accountId: string
+  accountId: number
   dateFilter: false | string
   operationTypeFilter: false | 'credit' | 'debit'
+}
+
+export interface IQueryBuilder {
+  rawQuery: string
+  options: {
+    replacements: Record<string, unknown>
+    type: QueryTypes
+  }
 }

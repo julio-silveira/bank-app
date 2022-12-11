@@ -22,7 +22,6 @@ class TransactionMiddleware {
       where: { username },
       raw: true
     })
-    console.log(user)
     if (user === null) {
       throw new NotFoundError(
         'Usuário não encontrado, por favor, verifique o username e tente novamente'
