@@ -16,8 +16,22 @@ class UserService {
     return user as unknown as iUser
   }
 
-  public async getUserById(id: number): Promise<iUser> {
-    const user = await this.usersModel.findOne({ where: { id }, raw: true })
+  public async getUserById(userId: number): Promise<iUser> {
+    const user = await this.usersModel.findByPk(userId, {
+      raw: true,
+      include: [
+        {
+          model: this.accountModel,
+          required: false,
+          attributes: ['balance']
+        }
+      ]
+    })
+    return user as unknown as iUser
+  }
+
+  public async getUserAndAccount(userId: number): Promise<iUser> {
+    const user = await this.usersModel.findByPk(userId, { raw: true })
     return user as unknown as iUser
   }
 

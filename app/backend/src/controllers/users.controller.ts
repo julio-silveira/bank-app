@@ -17,7 +17,6 @@ export default class UserControler {
 
   public userLogin = async (req: Request, res: Response) => {
     const { username, password } = req.body
-    console.log(username, password)
     if (!username || !password)
       throw new BadRequestError(
         'O nome de usuário/senha não podem estar em vazios'
@@ -48,5 +47,11 @@ export default class UserControler {
     res
       .status(statusCodes.CREATED)
       .json({ message: 'Usuário cadastrado com sucesso' })
+  }
+
+  public getUser = async (req: Request, res: Response) => {
+    const userId = Number(req.params.userId)
+    const account = await this.userService.getUserById(userId)
+    res.status(statusCodes.OK).json(account)
   }
 }
