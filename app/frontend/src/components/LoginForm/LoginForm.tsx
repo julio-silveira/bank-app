@@ -5,6 +5,7 @@ import { IUser } from '../../@types/userTypes'
 import AppContext from '../../context/AppContext'
 import { ContextType } from '../../@types/ContextTypes'
 import { IFetchLoginMessage } from '../../@types/taskTypes'
+import { Button } from '@mui/material'
 
 const FORM_INITIAL_STATE = {
   username: '',
@@ -85,12 +86,28 @@ export default function LoginForm() {
         </section>
       ) : (
         <section>
-          <button type="submit">Login</button>
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: '#FF00FF',
+              '&:hover': {
+                bgcolor: 'white',
+                color: '#FF00FF'
+              }
+            }}
+          >
+            Login
+          </Button>
           <span>
             Não tem conta?
-            <button type="button" onClick={() => setIsRegister(true)}>
+            <Button
+              variant="text"
+              sx={{ color: 'black' }}
+              type="button"
+              onClick={() => setIsRegister(true)}
+            >
               Cadastre-se
-            </button>
+            </Button>
           </span>
         </section>
       )}
