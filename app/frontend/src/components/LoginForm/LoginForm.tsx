@@ -5,14 +5,7 @@ import { IUser } from '../../@types/userTypes'
 import AppContext from '../../context/AppContext'
 import { ContextType } from '../../@types/ContextTypes'
 import { IFetchLoginMessage } from '../../@types/taskTypes'
-import {
-  Button,
-  Typography,
-  Paper,
-  TextField,
-  Box,
-  Divider
-} from '@mui/material'
+import { Button, Typography, Paper, TextField, Box } from '@mui/material'
 import { Stack } from '@mui/system'
 import NGCASHLogo from '../../assets/NGCASHLogo.svg'
 
@@ -74,10 +67,11 @@ export default function LoginForm() {
         py: 5,
         px: 4
       }}
-      onSubmit={handleSubmit}
     >
       <Stack
         spacing={1}
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           textAlign: 'center',
           marginRight: '10px'
@@ -112,6 +106,7 @@ export default function LoginForm() {
 
         <Button
           variant="contained"
+          type="submit"
           sx={{
             bgcolor: 'black',
             '&:hover': {
