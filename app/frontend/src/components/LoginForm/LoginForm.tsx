@@ -5,7 +5,16 @@ import { IUser } from '../../@types/userTypes'
 import AppContext from '../../context/AppContext'
 import { ContextType } from '../../@types/ContextTypes'
 import { IFetchLoginMessage } from '../../@types/taskTypes'
-import { Button } from '@mui/material'
+import {
+  Button,
+  Typography,
+  Paper,
+  TextField,
+  Box,
+  Divider
+} from '@mui/material'
+import { Stack } from '@mui/system'
+import NGCASHLogo from '../../assets/NGCASHLogo.svg'
 
 const FORM_INITIAL_STATE = {
   username: '',
@@ -54,63 +63,77 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>{isRegister ? 'RegisterForm' : 'LoginForm'}</h3>
-      <label htmlFor="username">
-        <input
+    <Paper
+      elevation={2}
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column-reverse', md: 'row' },
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: { xs: '90%', sm: '40%', md: '25%', lg: '15%' },
+        py: 5,
+        px: 4
+      }}
+      onSubmit={handleSubmit}
+    >
+      <Stack
+        spacing={1}
+        sx={{
+          textAlign: 'center',
+          marginRight: '10px'
+        }}
+      >
+        <Box sx={{ pb: 1 }}>
+          <Box sx={{ pb: 1 }}>
+            <img src={NGCASHLogo} alt="NG.CASH LOGO" />
+          </Box>
+          <Typography variant="h5" pb={2}>
+            {isRegister ? 'REGISTRE-SE' : 'LOGIN'}
+          </Typography>
+        </Box>
+        <TextField
+          label="Nome de usuário"
+          color="secondary"
+          size="small"
           onChange={handleChange}
           value={formData.username}
-          type="username"
           id="username"
-          placeholder="username"
         />
-      </label>
-      <label htmlFor="password">
-        <input
+        <TextField
+          label="Senha"
+          color="secondary"
+          size="small"
           onChange={handleChange}
           value={formData.password}
           type="password"
           id="password"
           placeholder="password"
         />
-      </label>
-      {isRegister ? (
-        <section>
-          <button type="submit">Registrar</button>
-          <span>
-            Deseja fazer login?
-            <button type="button" onClick={() => setIsRegister(false)}>
-              Voltar a página de login
-            </button>
-          </span>
-        </section>
-      ) : (
-        <section>
-          <Button
-            variant="contained"
-            sx={{
+
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: 'black',
+            '&:hover': {
               bgcolor: '#FF00FF',
-              '&:hover': {
-                bgcolor: 'white',
-                color: '#FF00FF'
-              }
-            }}
+              color: 'white'
+            }
+          }}
+        >
+          {isRegister ? 'Registrar' : 'Entrar'}
+        </Button>
+        <Typography variant="body2">
+          {isRegister ? 'Já tem conta?' : ' Não tem conta?'}
+          <Button
+            variant="text"
+            sx={{ color: '#FF00FF' }}
+            type="button"
+            onClick={() => setIsRegister(!isRegister)}
           >
-            Login
+            {isRegister ? 'Faça Login' : 'Cadastre'}
           </Button>
-          <span>
-            Não tem conta?
-            <Button
-              variant="text"
-              sx={{ color: 'black' }}
-              type="button"
-              onClick={() => setIsRegister(true)}
-            >
-              Cadastre-se
-            </Button>
-          </span>
-        </section>
-      )}
-    </form>
+        </Typography>
+      </Stack>
+    </Paper>
   )
 }
