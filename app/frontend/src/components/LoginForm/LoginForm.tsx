@@ -44,7 +44,7 @@ export default function LoginForm() {
     const { message } = (await userLogin(formData)) as IFetchLoginMessage
     if (!message) {
       setFormData(FORM_INITIAL_STATE)
-      navigate('/tasks')
+      navigate('/dashboard')
     } else {
       openAlertWithContent(message, 'error')
     }

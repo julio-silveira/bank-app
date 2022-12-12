@@ -1,3 +1,4 @@
+import { Paper } from '@mui/material'
 import React, { useContext, useState } from 'react'
 import { ContextType } from '../../@types/ContextTypes'
 import { ITaskState } from '../../@types/taskTypes'
@@ -28,14 +29,12 @@ const TaskForm: React.FC = () => {
     }
   }
   return (
-    <article>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="description">
-          <input onChange={handleChange} id="description"></input>
-        </label>
-        <button type="submit">Salvar Tarefa</button>
-      </form>
-    </article>
+    <Paper sx={{ width: '90%' }} component="form" onSubmit={handleSubmit}>
+      <label htmlFor="description">
+        <input onChange={handleChange} id="description"></input>
+      </label>
+      <button type="submit">Salvar Tarefa</button>
+    </Paper>
   )
 }
 

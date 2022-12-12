@@ -6,6 +6,7 @@ import { CustomAlert } from '../../components/CustomAlert'
 import { TaskForm } from '../../components/TaskForm'
 import { TasksList } from '../../components/TasksList'
 import AppContext from '../../context/AppContext'
+import { Header } from '../../components/Header'
 
 export default function Tasks() {
   const { loading, userTasks, isAlertOpen } = useContext(
@@ -21,7 +22,7 @@ export default function Tasks() {
 
   return (
     <main>
-      <h1>Tasks</h1>
+      <Header />
       <TaskForm />
       {loading ? (
         <Loading />
