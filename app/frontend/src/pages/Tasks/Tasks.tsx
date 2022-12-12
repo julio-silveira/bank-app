@@ -2,13 +2,13 @@
 import React, { useContext, useEffect } from 'react'
 import { ContextType } from '../../@types/ContextTypes'
 import { Loading } from '../../components/Loading'
-import { Modal } from '../../components/Modal'
+import { CustomAlert } from '../../components/CustomAlert'
 import { TaskForm } from '../../components/TaskForm'
 import { TasksList } from '../../components/TasksList'
 import AppContext from '../../context/AppContext'
 
 export default function Tasks() {
-  const { loading, userTasks, isModalOpen, updateTasks } = useContext(
+  const { loading, userTasks, isAlertOpen } = useContext(
     AppContext
   ) as ContextType
 
@@ -30,7 +30,7 @@ export default function Tasks() {
       ) : (
         <p>Adicione uma Tarefa!</p>
       )}
-      {isModalOpen && <Modal />}
+      {isAlertOpen && <CustomAlert />}
     </main>
   )
 }

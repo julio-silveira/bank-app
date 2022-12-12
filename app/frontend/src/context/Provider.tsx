@@ -28,15 +28,17 @@ const Provider: React.FC<iProps> = ({ children }) => {
     } else {
       navigate('/')
       openAlertWithContent(
-        'Erro de autenticação, por favor, faça login novamente'
+        'Erro de autenticação, por favor, faça login novamente',
+        'error'
       )
     }
     setLoading(false)
   }, [])
 
   const closeAlert = () => setAlertOpen(false)
-  const openAlertWithContent = (content: string): void => {
+  const openAlertWithContent = (content: string, color: AlertColor): void => {
     setAlertContent(content)
+    setAlertType(color)
     setAlertOpen(true)
   }
 

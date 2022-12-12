@@ -2,11 +2,11 @@ import { Box } from '@mui/material'
 import * as React from 'react'
 import { ContextType } from '../../@types/ContextTypes'
 import { LoginForm } from '../../components/LoginForm'
-import { Modal } from '../../components/Modal'
+import { CustomAlert } from '../../components/CustomAlert'
 import AppContext from '../../context/AppContext'
 
 export default function Home() {
-  const { isModalOpen } = React.useContext(AppContext) as ContextType
+  const { isAlertOpen } = React.useContext(AppContext) as ContextType
   return (
     <Box
       sx={{
@@ -18,7 +18,7 @@ export default function Home() {
       }}
     >
       <LoginForm />
-      {isModalOpen && <Modal />}
+      {isAlertOpen && <CustomAlert />}
     </Box>
   )
 }

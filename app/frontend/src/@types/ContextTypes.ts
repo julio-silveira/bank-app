@@ -1,3 +1,5 @@
+import { AlertColor } from '@mui/material'
+import { Dispatch, SetStateAction } from 'react'
 import { ITaskData } from './taskTypes'
 
 export type ContextType = {
@@ -6,10 +8,12 @@ export type ContextType = {
   userTasks: ITaskData[]
   setUserTasks: (userTasks: ITaskData[]) => void
   updateTasks: () => void
-  modalContent: string
-  setModalContent: (content: string) => void
-  isModalOpen: boolean
-  setModalOpen: (bool: boolean) => void
-  closeModal: () => void
-  openModalWithContent: (content: string) => void
+  alertContent: string
+  setAlertContent: (content: string) => void
+  isAlertOpen: boolean
+  setAlertOpen: (bool: boolean) => void
+  closeAlert: () => void
+  openAlertWithContent: (content: string, color: AlertColor) => void
+  alertType: AlertColor
+  setAlertType: Dispatch<SetStateAction<AlertColor>>
 }

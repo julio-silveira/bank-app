@@ -6,7 +6,7 @@ import AppContext from '../../context/AppContext'
 import { saveTask } from '../../helpers/taskFetch'
 
 const TaskForm: React.FC = () => {
-  const { updateTasks, openModalWithContent } = useContext(
+  const { updateTasks, openAlertWithContent } = useContext(
     AppContext
   ) as ContextType
   const [taskData, setTaskData] = useState<ITaskState>({
@@ -24,7 +24,7 @@ const TaskForm: React.FC = () => {
     const { message } = (await saveTask(taskData)) as IFetchLoginMessage
     updateTasks()
     if (message !== undefined) {
-      openModalWithContent(message)
+      openAlertWithContent(message, 'error')
     }
   }
   return (

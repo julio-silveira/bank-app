@@ -15,7 +15,7 @@ const FORM_INITIAL_STATE = {
 }
 
 export default function LoginForm() {
-  const { openModalWithContent } = useContext(AppContext) as ContextType
+  const { openAlertWithContent } = useContext(AppContext) as ContextType
 
   const navigate = useNavigate()
   const [isRegister, setIsRegister] = useState(false)
@@ -32,11 +32,11 @@ export default function LoginForm() {
     )) as IFetchLoginMessage
 
     if (status === 201 && message !== undefined) {
-      openModalWithContent(message)
+      openAlertWithContent(message, 'success')
       setIsRegister(false)
       setFormData(FORM_INITIAL_STATE)
     } else if (message !== undefined) {
-      openModalWithContent(message)
+      openAlertWithContent(message, 'error')
     }
   }
 
@@ -46,7 +46,7 @@ export default function LoginForm() {
       setFormData(FORM_INITIAL_STATE)
       navigate('/tasks')
     } else {
-      openModalWithContent(message)
+      openAlertWithContent(message, 'error')
     }
   }
 
@@ -63,7 +63,7 @@ export default function LoginForm() {
         flexDirection: { xs: 'column-reverse', md: 'row' },
         justifyContent: 'space-around',
         alignItems: 'center',
-        width: { xs: '90%', sm: '40%', md: '25%', lg: '15%' },
+        width: { xs: '90%', sm: '40%', md: '25%', lg: '20%' },
         py: 5,
         px: 4
       }}
