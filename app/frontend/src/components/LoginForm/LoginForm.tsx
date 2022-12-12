@@ -73,15 +73,14 @@ export default function LoginForm() {
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          textAlign: 'center',
-          marginRight: '10px'
+          textAlign: 'center'
         }}
       >
         <Box sx={{ pb: 1 }}>
           <Box sx={{ pb: 1 }}>
             <img src={NGCASHLogo} alt="NG.CASH LOGO" />
           </Box>
-          <Typography variant="h5" pb={2}>
+          <Typography variant="h6" pb={2}>
             {isRegister ? 'REGISTRE-SE' : 'LOGIN'}
           </Typography>
         </Box>
@@ -121,11 +120,11 @@ export default function LoginForm() {
           {isRegister ? 'Já tem conta?' : ' Não tem conta?'}
           <Button
             variant="text"
-            sx={{ color: '#FF00FF' }}
+            color="secondary"
             type="button"
             onClick={() => setIsRegister(!isRegister)}
           >
-            {isRegister ? 'Faça Login' : 'Cadastre'}
+            {isRegister ? 'Faça Login' : 'Cadastre-se'}
           </Button>
         </Typography>
       </Stack>
