@@ -4,9 +4,9 @@ import { ContextType } from '../../@types/ContextTypes'
 import { Loading } from '../../components/Loading'
 import { CustomAlert } from '../../components/CustomAlert'
 import { TaskForm } from '../../components/TaskForm'
-import { TasksList } from '../../components/TasksList'
 import AppContext from '../../context/AppContext'
 import { Header } from '../../components/Header'
+import { DashboardList } from '../../components/DashboardList'
 
 export default function Tasks() {
   const { loading, userTasks, isAlertOpen } = useContext(
@@ -24,13 +24,7 @@ export default function Tasks() {
     <main>
       <Header />
       <TaskForm />
-      {loading ? (
-        <Loading />
-      ) : userTasks.length > 0 ? (
-        <TasksList />
-      ) : (
-        <p>Adicione uma Tarefa!</p>
-      )}
+      <DashboardList />
       {isAlertOpen && <CustomAlert />}
     </main>
   )
