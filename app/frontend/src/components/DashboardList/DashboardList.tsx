@@ -117,14 +117,26 @@ const TasksList: React.FC = () => {
   // }
 
   return (
-    <Paper>
+    <Paper
+      sx={{
+        mt: 2,
+        pb: 4,
+        px: { xs: 0, md: 2 },
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        maxWidth: '80%'
+      }}
+    >
       <p>Filtros</p>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer>
+        <Table sx={{ px: 10 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               {headCells.map((name) => (
-                <TableCell key={name}>{name}</TableCell>
+                <TableCell sx={{ textAlign: 'center' }} key={name}>
+                  {name}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>

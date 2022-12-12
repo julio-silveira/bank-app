@@ -7,6 +7,7 @@ const Header = () => {
   return (
     <Paper
       sx={{
+        width: '99%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
