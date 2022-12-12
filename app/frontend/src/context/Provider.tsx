@@ -3,7 +3,9 @@ import { AlertColor } from '@mui/material'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ITransactionData } from '../@types/TransactionsTypes'
+import { IAccountOutput } from '../@types/userTypes'
 import { getTransactions } from '../helpers/transactionsFetch'
+import { getAccountInfo } from '../helpers/userFetch'
 import AppContext from './AppContext'
 
 const AUTH_ERROR = 'Erro de autenticação, por favor, faça login novamente'
@@ -21,20 +23,30 @@ const Provider: React.FC<iProps> = ({ children }) => {
   const [alertContent, setAlertContent] = useState<string>('')
   const [alertType, setAlertType] = useState<AlertColor>('error')
   const [isAlertOpen, setAlertOpen] = useState<boolean>(false)
+  const [userInfo, setUserInfo] = useState<IAccountOutput>({
+    username: '',
+    balance: ''
+  })
 
   const updateTransactions = useCallback(async () => {
     setLoading(true)
     const transaction = await getTransactions()
 
     if (transaction !== undefined) {
-      const transactions = (await getTransactions()) as ITransactionData[]
-
-      setUserTransactions(transactions)
+      setUserTransactions(transaction)
     } else {
       navigate('/')
       openAlertWithContent(AUTH_ERROR, 'error')
     }
     setLoading(false)
+  }, [])
+
+  const updateUsers = useCallback(async () => {
+    const userAccountInfo = await getAccountInfo()
+
+    if (userAccountInfo != undefined) {
+      setUserInfo(userAccountInfo)
+    }
   }, [])
 
   const closeAlert = () => setAlertOpen(false)
@@ -59,7 +71,9 @@ const Provider: React.FC<iProps> = ({ children }) => {
         closeAlert,
         openAlertWithContent,
         alertType,
-        setAlertType
+        setAlertType,
+        updateUsers,
+        userInfo
       }}
     >
       {children}

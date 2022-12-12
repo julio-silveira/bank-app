@@ -18,7 +18,6 @@ class UserService {
 
   public async getUserById(userId: number): Promise<iUser> {
     const user = await this.usersModel.findByPk(userId, {
-      raw: true,
       include: [
         {
           model: this.accountModel,

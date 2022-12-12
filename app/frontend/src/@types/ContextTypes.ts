@@ -1,6 +1,7 @@
 import { AlertColor } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
 import { ITransactionData } from './TransactionsTypes'
+import { IAccountOutput } from './userTypes'
 
 export type ContextType = {
   loading: boolean
@@ -16,4 +17,6 @@ export type ContextType = {
   openAlertWithContent: (content: string, color: AlertColor) => void
   alertType: AlertColor
   setAlertType: Dispatch<SetStateAction<AlertColor>>
+  updateUsers: () => void
+  userInfo: IAccountOutput
 }

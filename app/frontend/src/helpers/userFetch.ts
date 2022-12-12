@@ -1,5 +1,5 @@
-import { IUser, UserLogin } from '../@types/userTypes'
-import { saveToken, saveUserId } from './localStorage'
+import { IUser, IAccount, UserLogin, IAccountOutput } from '../@types/userTypes'
+import { getToken, getUserId, saveToken, saveUserId } from './localStorage'
 
 export const userLogin = async (userData: IUser): Promise<UserLogin> => {
   try {
@@ -11,7 +11,6 @@ export const userLogin = async (userData: IUser): Promise<UserLogin> => {
     const { token, userId, message } = await response.json()
     saveToken(token)
     saveUserId(userId)
-    console.log(message)
 
     return { message, status: response.status, statusText: response.statusText }
   } catch (error) {
@@ -31,6 +30,26 @@ export const userRegister = async (userData: IUser): Promise<UserLogin> => {
     console.log(message)
 
     return { message, status: response.status, statusText: response.statusText }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const getAccountInfo = async (): Promise<IAccountOutput | void> => {
+  try {
+    const userId = getUserId()
+    const token = getToken()
+    const response = await fetch(`http://localhost:8000/user/${userId}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', authorization: token }
+    })
+
+    const {
+      username,
+      account: { balance }
+    } = (await response.json()) as unknown as IAccount
+
+    return { username, balance }
   } catch (error) {
     console.error(error)
   }

@@ -9,13 +9,14 @@ import { DashboardList } from '../../components/DashboardList'
 import { Box } from '@mui/material'
 
 export default function Tasks() {
-  const { loading, updateTransactions, isAlertOpen } = useContext(
+  const { updateUsers, updateTransactions, isAlertOpen } = useContext(
     AppContext
   ) as ContextType
 
   useEffect(() => {
     const getTasks = async () => {
       updateTransactions()
+      updateUsers()
     }
     getTasks(), []
   }, [])
