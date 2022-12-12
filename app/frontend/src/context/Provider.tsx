@@ -2,9 +2,11 @@
 import { AlertColor } from '@mui/material'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ITaskData } from '../@types/taskTypes'
-import { getTasks } from '../helpers/taskFetch'
+import { ITransactionData } from '../@types/TransactionsTypes'
+import { getTransactions } from '../helpers/transactionsFetch'
 import AppContext from './AppContext'
+
+const AUTH_ERROR = 'Erro de autenticação, por favor, faça login novamente'
 
 interface iProps {
   children: React.ReactElement
@@ -13,25 +15,24 @@ interface iProps {
 const Provider: React.FC<iProps> = ({ children }) => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
-  const [userTasks, setUserTasks] = useState<ITaskData[]>([])
+  const [userTransactions, setUserTransactions] = useState<ITransactionData[]>(
+    []
+  )
   const [alertContent, setAlertContent] = useState<string>('')
   const [alertType, setAlertType] = useState<AlertColor>('error')
   const [isAlertOpen, setAlertOpen] = useState<boolean>(false)
 
-  const updateTasks = useCallback(async () => {
+  const updateTransactions = useCallback(async () => {
     setLoading(true)
-    const tasksData = await getTasks()
+    const transaction = await getTransactions()
 
-    if (tasksData !== undefined) {
-      const tasks = (await getTasks()) as ITaskData[]
+    if (transaction !== undefined) {
+      const transactions = (await getTransactions()) as ITransactionData[]
 
-      setUserTasks(tasks)
+      setUserTransactions(transactions)
     } else {
       navigate('/')
-      openAlertWithContent(
-        'Erro de autenticação, por favor, faça login novamente',
-        'error'
-      )
+      openAlertWithContent(AUTH_ERROR, 'error')
     }
     setLoading(false)
   }, [])
@@ -48,9 +49,9 @@ const Provider: React.FC<iProps> = ({ children }) => {
       value={{
         loading,
         setLoading,
-        userTasks,
-        setUserTasks,
-        updateTasks,
+        userTransactions,
+        setUserTransactions,
+        updateTransactions,
         alertContent,
         setAlertContent,
         isAlertOpen,
