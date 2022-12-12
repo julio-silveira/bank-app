@@ -1,3 +1,4 @@
+import { AlertColor } from '@mui/material'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ITaskData } from '../@types/taskTypes'
@@ -12,8 +13,9 @@ const Provider: React.FC<iProps> = ({ children }) => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [userTasks, setUserTasks] = useState<ITaskData[]>([])
-  const [modalContent, setModalContent] = useState<string>('')
-  const [isModalOpen, setModalOpen] = useState<boolean>(false)
+  const [alertContent, setAlertContent] = useState<string>('')
+  const [alertType, setAlertType] = useState<AlertColor>('error')
+  const [isAlertOpen, setAlertOpen] = useState<boolean>(false)
 
   const updateTasks = useCallback(async () => {
     setLoading(true)
@@ -25,17 +27,17 @@ const Provider: React.FC<iProps> = ({ children }) => {
       setUserTasks(tasks)
     } else {
       navigate('/')
-      openModalWithContent(
+      openAlertWithContent(
         'Erro de autenticação, por favor, faça login novamente'
       )
     }
     setLoading(false)
   }, [])
 
-  const closeModal = () => setModalOpen(false)
-  const openModalWithContent = (content: string): void => {
-    setModalContent(content)
-    setModalOpen(true)
+  const closeAlert = () => setAlertOpen(false)
+  const openAlertWithContent = (content: string): void => {
+    setAlertContent(content)
+    setAlertOpen(true)
   }
 
   return (
@@ -46,12 +48,14 @@ const Provider: React.FC<iProps> = ({ children }) => {
         userTasks,
         setUserTasks,
         updateTasks,
-        modalContent,
-        setModalContent,
-        isModalOpen,
-        setModalOpen,
-        closeModal,
-        openModalWithContent
+        alertContent,
+        setAlertContent,
+        isAlertOpen,
+        setAlertOpen,
+        closeAlert,
+        openAlertWithContent,
+        alertType,
+        setAlertType
       }}
     >
       {children}

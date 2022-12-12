@@ -12,12 +12,12 @@ export default function Tasks() {
     AppContext
   ) as ContextType
 
-  useEffect(() => {
-    const getTasks = async () => {
-      updateTasks()
-    }
-    getTasks(), []
-  }, [])
+  // useEffect(() => {
+  //   const getTasks = async () => {
+  //     updateTasks()
+  //   }
+  //   getTasks(), []
+  // }, [])
 
   return (
     <main>
