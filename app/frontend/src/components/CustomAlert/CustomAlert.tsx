@@ -20,7 +20,7 @@ const CustomAlert = () => {
         severity={alertType}
         sx={{
           position: 'fixed',
-          bottom: '1%',
+          bottom: { xs: '10%', sm: '1%' },
           right: '1%',
           display: 'flex',
           alignItems: 'center'

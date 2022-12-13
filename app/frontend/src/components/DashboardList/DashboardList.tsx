@@ -12,6 +12,7 @@ import { ContextType } from '../../@types/ContextTypes'
 import AppContext from '../../context/AppContext'
 
 const headCells = ['debit', 'credit', 'value', 'date']
+const format = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
 const TasksList: React.FC = () => {
   const { userTransactions } = useContext(AppContext) as ContextType
 
@@ -49,8 +50,12 @@ const TasksList: React.FC = () => {
                 <TableRow hover key={index}>
                   <TableCell>{debitedusername}</TableCell>
                   <TableCell>{creditedusername}</TableCell>
-                  <TableCell>{value}</TableCell>
-                  <TableCell>{created_at}</TableCell>
+                  <TableCell>
+                    {parseFloat(value).toLocaleString('pt-BR', format)}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(created_at).toLocaleDateString('pt-BR')}
+                  </TableCell>
                 </TableRow>
               )
             )}

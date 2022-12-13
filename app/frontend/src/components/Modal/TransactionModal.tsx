@@ -85,7 +85,7 @@ function TransactionModal() {
             label="Valor"
           />
           <IconButton disabled={disableBtn()} onClick={handleSubmit}>
-            <SendIcon color="secondary" />
+            <SendIcon color={disableBtn() ? 'disabled' : 'secondary'} />
           </IconButton>
         </Stack>
       </Box>

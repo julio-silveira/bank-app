@@ -27,9 +27,7 @@ export default function LoginForm() {
   }
 
   const handleRegister = async () => {
-    const { message, status } = (await userRegister(
-      formData
-    )) as IFetchMessage
+    const { message, status } = (await userRegister(formData)) as IFetchMessage
 
     if (status === 201 && message !== undefined) {
       openAlertWithContent(message, 'success')
