@@ -10,9 +10,9 @@ import {
 import React, { useContext } from 'react'
 import { ContextType } from '../../@types/ContextTypes'
 import AppContext from '../../context/AppContext'
+import toBrl from '../../helpers/toBRL'
 
 const headCells = ['debit', 'credit', 'value', 'date']
-const format = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
 const TasksList: React.FC = () => {
   const { userTransactions } = useContext(AppContext) as ContextType
 
@@ -50,9 +50,7 @@ const TasksList: React.FC = () => {
                 <TableRow hover key={index}>
                   <TableCell>{debitedusername}</TableCell>
                   <TableCell>{creditedusername}</TableCell>
-                  <TableCell>
-                    {parseFloat(value).toLocaleString('pt-BR', format)}
-                  </TableCell>
+                  <TableCell>{toBrl(value)}</TableCell>
                   <TableCell>
                     {new Date(created_at).toLocaleDateString('pt-BR')}
                   </TableCell>
