@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import ValidateJWT from '../auth/validateJWT'
+import JWT from '../auth/JWT'
 import UserControler from '../controllers/users.controller'
 import UserMiddleware from '../middlewares/userMiddleware'
 
 const LOGIN_ROUTE = '/login'
 const CREATE_USER_ROUTE = '/register'
-const USER_ROUTE = '/user/:userId'
+const USER_ROUTE = '/user'
 
 const router = Router()
 
@@ -13,9 +13,9 @@ const usersController = new UserControler()
 
 const userMiddleware = new UserMiddleware()
 
-const validateJWT = new ValidateJWT()
+const jwt = new JWT()
 
-router.get(USER_ROUTE, validateJWT.tokenAuth, usersController.getUser)
+router.get(USER_ROUTE, jwt.auth, usersController.getUser)
 
 router.post(
   LOGIN_ROUTE,

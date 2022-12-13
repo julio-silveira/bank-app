@@ -2,32 +2,25 @@ import { Request, Response } from 'express'
 import statusCodes from '../statusCodes'
 import TransactionServices from '../services/transactions.service'
 import { ITransactionFilters } from '../interfaces/transaction.interface'
+import { CustomRequest } from '../interfaces/user.interface'
 
 export default class TaskControler {
   constructor(private transactionServices = new TransactionServices()) {}
 
   public getAll = async (req: Request, res: Response) => {
-    const accountId = Number(req.params.accountId)
-    const transactions = await this.transactionServices.getAll(accountId)
-    res.status(statusCodes.OK).json(transactions)
-  }
-
-  public getAllWithFilters = async (req: Request, res: Response) => {
-    const accountId = Number(req.params.accountId)
+    const { accountId } = (req as CustomRequest).user
     const { dateFilter, typeFilter } = req.body
     const transactionData: ITransactionFilters = {
       accountId,
-      dateFilter,
-      typeFilter
+      dateFilter: dateFilter || false,
+      typeFilter: typeFilter || false
     }
-    const transactions = await this.transactionServices.getAllWithFilters(
-      transactionData
-    )
+    const transactions = await this.transactionServices.getAll(transactionData)
     res.status(statusCodes.OK).json(transactions)
   }
 
   public create = async (req: Request, res: Response) => {
-    const accountId = Number(req.params.accountId)
+    const { accountId } = (req as CustomRequest).user
     const { creditedAccountId, value } = req.body
     await this.transactionServices.create({
       debitedAccountId: accountId,

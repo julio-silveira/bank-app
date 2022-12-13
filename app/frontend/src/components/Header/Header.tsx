@@ -28,6 +28,7 @@ const Header = () => {
       sx={{
         position: 'fixed',
         top: 0,
+        zIndex: 2,
         width: '95%',
         display: 'flex',
         justifyContent: 'space-between',

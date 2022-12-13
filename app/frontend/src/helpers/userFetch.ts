@@ -37,9 +37,8 @@ export const userRegister = async (userData: IUser): Promise<UserLogin> => {
 
 export const getAccountInfo = async (): Promise<IAccountOutput | void> => {
   try {
-    const userId = getUserId()
     const token = getToken()
-    const response = await fetch(`http://localhost:8000/user/${userId}`, {
+    const response = await fetch(`http://localhost:8000/user/`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', authorization: token }
     })

@@ -16,3 +16,13 @@ export interface IFetchMessage {
   status: number | undefined
   statusText: string | undefined
 }
+
+export interface IFetchFilteredOutput {
+  status: number | undefined
+  data: ITransactionData[]
+}
+
+export interface IFilters {
+  typeFilter: string | false | undefined
+  dateFilter: string | false | undefined
+}

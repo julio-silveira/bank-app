@@ -1,23 +1,24 @@
-import iUser from '../interfaces/user.interface'
 import User from '../database/models/UserModel'
 import Account from '../database/models/AccountModel'
 import sequelize from '../database/models'
 import { Transaction } from 'sequelize'
+import { IUser } from '../interfaces/user.interface'
 
 class UserService {
   public usersModel = User
   public accountModel = Account
 
-  public async getUser(username: string): Promise<iUser> {
+  public async getUser(username: string): Promise<IUser> {
     const user = await this.usersModel.findOne({
       where: { username },
       raw: true
     })
-    return user as unknown as iUser
+    return user as unknown as IUser
   }
 
-  public async getUserById(userId: number): Promise<iUser> {
-    const user = await this.usersModel.findByPk(userId, {
+  public async getUserById(accountId: number): Promise<IUser> {
+    const user = await this.usersModel.findOne({
+      where: { accountId },
       include: [
         {
           model: this.accountModel,
@@ -26,15 +27,10 @@ class UserService {
         }
       ]
     })
-    return user as unknown as iUser
+    return user as unknown as IUser
   }
 
-  public async getUserAndAccount(userId: number): Promise<iUser> {
-    const user = await this.usersModel.findByPk(userId, { raw: true })
-    return user as unknown as iUser
-  }
-
-  public async createUser(userData: iUser): Promise<iUser | void> {
+  public async createUser(userData: IUser): Promise<IUser | void> {
     try {
       const newUser = await sequelize.transaction(async (t: Transaction) => {
         const newAccount = await this.accountModel.create(
@@ -50,7 +46,7 @@ class UserService {
         )
         return data
       })
-      return newUser as unknown as iUser
+      return newUser as unknown as IUser
     } catch (error) {
       console.error(error)
     }

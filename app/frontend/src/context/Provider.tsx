@@ -31,7 +31,10 @@ const Provider: React.FC<iProps> = ({ children }) => {
 
   const updateTransactions = useCallback(async () => {
     setLoading(true)
-    const transaction = await getTransactions()
+    const transaction = (await getTransactions(
+      false,
+      false
+    )) as unknown as ITransactionData[]
 
     if (transaction !== undefined) {
       setUserTransactions(transaction)
