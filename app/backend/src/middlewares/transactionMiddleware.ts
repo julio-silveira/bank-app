@@ -40,8 +40,6 @@ class TransactionMiddleware {
     const { dateFilter, typeFilter } = req.body
     if (dateFilter === undefined || typeFilter === undefined)
       throw new BadRequestError('Os filtros não podem ser vazios')
-    if (!dateFilter && !typeFilter)
-      throw new BadRequestError('Combinação de filtros inválida')
     if (
       typeFilter !== 'credit' &&
       typeFilter !== 'debit' &&

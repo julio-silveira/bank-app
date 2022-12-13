@@ -16,6 +16,7 @@ class JWT {
     const { authorization } = req.headers
 
     if (!authorization) throw new NotFoundError('Token não encontrado')
+    console.log(secret)
 
     const decoded = jwt.verify(authorization, secret) as Token
 
@@ -28,6 +29,8 @@ class JWT {
     }
 
     ;(req as CustomRequest).user = user
+    console.log('autorizado')
+
     next()
   }
 }

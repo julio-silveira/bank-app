@@ -18,10 +18,10 @@ import {
 import { Stack } from '@mui/system'
 import React, { useContext, useState } from 'react'
 import { ContextType } from '../../@types/ContextTypes'
-import { IFetchFilteredOutput } from '../../@types/TransactionsTypes'
+import { ITransactionData } from '../../@types/TransactionsTypes'
 import AppContext from '../../context/AppContext'
 import toBrl from '../../helpers/toBRL'
-import { getFilteredTransactions } from '../../helpers/transactionsFetch'
+import { getTransactions } from '../../helpers/transactionsFetch'
 
 const headCells = ['De', 'Para', 'Valor', 'Data']
 const TasksList: React.FC = () => {
@@ -53,14 +53,12 @@ const TasksList: React.FC = () => {
   }
 
   const handleSearch = async () => {
-    const payload = (await getFilteredTransactions(
+    const data = (await getTransactions(
       typeFilter,
       dateFilter
-    )) as unknown as IFetchFilteredOutput
-    console.log(payload?.data, payload?.status)
-
-    if (payload.data !== undefined) {
-      setUserTransactions(payload.data)
+    )) as unknown as ITransactionData[]
+    if (data !== undefined) {
+      setUserTransactions(data)
     }
   }
 
