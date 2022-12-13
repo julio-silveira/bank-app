@@ -4,7 +4,7 @@
 }
 
 body {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   background-image: url("http://ng.cash/_nuxt/img/banner-landing-page.0bd7f55.jpg");
 }

@@ -11,12 +11,15 @@ const Header = () => {
   return (
     <Paper
       sx={{
-        width: '99%',
+        position: 'fixed',
+        top: 0,
+        width: '95%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: ' 5px 20px'
       }}
+      component="header"
     >
       <img width="100px" src={NGCASHLogo} alt="NGlogo" />
       <Stack direction="row" spacing={2} sx={{ pe: 2 }}>

@@ -18,14 +18,15 @@ const TasksList: React.FC = () => {
   return (
     <Paper
       sx={{
-        mt: 2,
+        my: 10,
         pb: 4,
         px: { xs: 0, md: 2 },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        maxWidth: '80%'
+        maxWidth: '90%'
       }}
+      component="section"
     >
       <p>Filtros</p>
       <TableContainer>

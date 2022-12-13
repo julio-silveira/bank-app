@@ -1,7 +1,6 @@
 import { Box, Fab } from '@mui/material'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { ContextType } from '../../@types/ContextTypes'
-import { IFetchLoginMessage } from '../../@types/userTypes'
 import AppContext from '../../context/AppContext'
 import AddIcon from '@mui/icons-material/Add'
 
@@ -10,15 +9,15 @@ const Footer: React.FC = () => {
 
   return (
     <Box
-      pb={2}
+      pb={0}
       sx={{
         display: 'flex',
         justifyContent: 'center',
-        width: '100%',
+        width: '95%',
         position: 'fixed',
         bottom: 0
       }}
-      component="form"
+      component="footer"
     >
       <Fab
         color="secondary"
