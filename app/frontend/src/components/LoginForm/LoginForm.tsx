@@ -4,7 +4,7 @@ import { userLogin, userRegister } from '../../helpers/userFetch'
 import { IUser } from '../../@types/userTypes'
 import AppContext from '../../context/AppContext'
 import { ContextType } from '../../@types/ContextTypes'
-import { IFetchLoginMessage } from '../../@types/TransactionsTypes'
+import { IFetchMessage } from '../../@types/TransactionsTypes'
 import { Button, Typography, Paper, TextField, Box } from '@mui/material'
 import { Stack } from '@mui/system'
 import NGCASHLogo from '../../assets/NGCASHLogo.svg'
@@ -29,7 +29,7 @@ export default function LoginForm() {
   const handleRegister = async () => {
     const { message, status } = (await userRegister(
       formData
-    )) as IFetchLoginMessage
+    )) as IFetchMessage
 
     if (status === 201 && message !== undefined) {
       openAlertWithContent(message, 'success')
@@ -41,7 +41,7 @@ export default function LoginForm() {
   }
 
   const handleLogin = async () => {
-    const { message } = (await userLogin(formData)) as IFetchLoginMessage
+    const { message } = (await userLogin(formData)) as IFetchMessage
     if (!message) {
       setFormData(FORM_INITIAL_STATE)
       navigate('/dashboard')

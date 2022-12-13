@@ -20,6 +20,7 @@ const Provider: React.FC<iProps> = ({ children }) => {
   const [userTransactions, setUserTransactions] = useState<ITransactionData[]>(
     []
   )
+  const [openModal, setOpenModal] = useState(false)
   const [alertContent, setAlertContent] = useState<string>('')
   const [alertType, setAlertType] = useState<AlertColor>('error')
   const [isAlertOpen, setAlertOpen] = useState<boolean>(false)
@@ -73,7 +74,9 @@ const Provider: React.FC<iProps> = ({ children }) => {
         alertType,
         setAlertType,
         updateUsers,
-        userInfo
+        userInfo,
+        setOpenModal,
+        openModal
       }}
     >
       {children}

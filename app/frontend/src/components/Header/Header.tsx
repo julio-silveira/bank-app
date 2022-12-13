@@ -20,7 +20,12 @@ const Header = () => {
     >
       <img width="100px" src={NGCASHLogo} alt="NGlogo" />
       <Stack direction="row" spacing={2} sx={{ pe: 2 }}>
-        <Typography variant="body1">{userInfo.username}</Typography>
+        <Typography
+          sx={{ display: { sm: 'block', xs: 'none' } }}
+          variant="body1"
+        >
+          {userInfo.username}
+        </Typography>
         <Typography variant="body1">{`R$${userInfo.balance}`}</Typography>
         <Typography variant="body1">Logout</Typography>
       </Stack>

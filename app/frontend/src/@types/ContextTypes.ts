@@ -19,4 +19,6 @@ export type ContextType = {
   setAlertType: Dispatch<SetStateAction<AlertColor>>
   updateUsers: () => void
   userInfo: IAccountOutput
+  setOpenModal: (bool: boolean) => void
+  openModal: boolean
 }

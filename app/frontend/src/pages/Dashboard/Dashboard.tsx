@@ -7,6 +7,7 @@ import AppContext from '../../context/AppContext'
 import { Header } from '../../components/Header'
 import { DashboardList } from '../../components/DashboardList'
 import { Box } from '@mui/material'
+import TransactionModal from '../../components/Modal/TransactionModal'
 
 export default function Tasks() {
   const { updateUsers, updateTransactions, isAlertOpen } = useContext(
@@ -35,6 +36,7 @@ export default function Tasks() {
       <Header />
       <DashboardList />
       {isAlertOpen && <CustomAlert />}
+      <TransactionModal />
       <Footer />
     </Box>
   )

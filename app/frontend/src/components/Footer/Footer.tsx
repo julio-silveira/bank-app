@@ -6,9 +6,7 @@ import AppContext from '../../context/AppContext'
 import AddIcon from '@mui/icons-material/Add'
 
 const Footer: React.FC = () => {
-  const { updateTransactions, openAlertWithContent } = useContext(
-    AppContext
-  ) as ContextType
+  const { setOpenModal } = useContext(AppContext) as ContextType
 
   return (
     <Box
@@ -21,9 +19,13 @@ const Footer: React.FC = () => {
         bottom: 0
       }}
       component="form"
-      // onSubmit={handleSubmit}
     >
-      <Fab color="secondary" aria-label="add">
+      <Fab
+        color="secondary"
+        type="button"
+        onClick={() => setOpenModal(true)}
+        aria-label="add"
+      >
         <AddIcon />
       </Fab>
     </Box>
