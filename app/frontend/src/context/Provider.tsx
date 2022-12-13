@@ -1,8 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { AlertColor } from '@mui/material'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ITaskData } from '../@types/taskTypes'
-import { getTasks } from '../helpers/taskFetch'
+import { ITransactionData } from '../@types/TransactionsTypes'
+import { IAccountOutput } from '../@types/userTypes'
+import { getTransactions } from '../helpers/transactionsFetch'
+import { getAccountInfo } from '../helpers/userFetch'
 import AppContext from './AppContext'
+
+const AUTH_ERROR = 'Erro de autenticação, por favor, faça login novamente'
 
 interface iProps {
   children: React.ReactElement
@@ -11,31 +17,47 @@ interface iProps {
 const Provider: React.FC<iProps> = ({ children }) => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
-  const [userTasks, setUserTasks] = useState<ITaskData[]>([])
-  const [modalContent, setModalContent] = useState<string>('')
-  const [isModalOpen, setModalOpen] = useState<boolean>(false)
+  const [userTransactions, setUserTransactions] = useState<ITransactionData[]>(
+    []
+  )
+  const [openModal, setOpenModal] = useState(false)
+  const [alertContent, setAlertContent] = useState<string>('')
+  const [alertType, setAlertType] = useState<AlertColor>('error')
+  const [isAlertOpen, setAlertOpen] = useState<boolean>(false)
+  const [userInfo, setUserInfo] = useState<IAccountOutput>({
+    username: '',
+    balance: ''
+  })
 
-  const updateTasks = useCallback(async () => {
+  const updateTransactions = useCallback(async () => {
     setLoading(true)
-    const tasksData = await getTasks()
+    const transaction = (await getTransactions(
+      false,
+      false
+    )) as unknown as ITransactionData[]
 
-    if (tasksData !== undefined) {
-      const tasks = (await getTasks()) as ITaskData[]
-
-      setUserTasks(tasks)
+    if (transaction !== undefined) {
+      setUserTransactions(transaction)
     } else {
       navigate('/')
-      openModalWithContent(
-        'Erro de autenticação, por favor, faça login novamente'
-      )
+      openAlertWithContent(AUTH_ERROR, 'error')
     }
     setLoading(false)
   }, [])
 
-  const closeModal = () => setModalOpen(false)
-  const openModalWithContent = (content: string): void => {
-    setModalContent(content)
-    setModalOpen(true)
+  const updateUsers = useCallback(async () => {
+    const userAccountInfo = await getAccountInfo()
+
+    if (userAccountInfo != undefined) {
+      setUserInfo(userAccountInfo)
+    }
+  }, [])
+
+  const closeAlert = () => setAlertOpen(false)
+  const openAlertWithContent = (content: string, color: AlertColor): void => {
+    setAlertContent(content)
+    setAlertType(color)
+    setAlertOpen(true)
   }
 
   return (
@@ -43,15 +65,21 @@ const Provider: React.FC<iProps> = ({ children }) => {
       value={{
         loading,
         setLoading,
-        userTasks,
-        setUserTasks,
-        updateTasks,
-        modalContent,
-        setModalContent,
-        isModalOpen,
-        setModalOpen,
-        closeModal,
-        openModalWithContent
+        userTransactions,
+        setUserTransactions,
+        updateTransactions,
+        alertContent,
+        setAlertContent,
+        isAlertOpen,
+        setAlertOpen,
+        closeAlert,
+        openAlertWithContent,
+        alertType,
+        setAlertType,
+        updateUsers,
+        userInfo,
+        setOpenModal,
+        openModal
       }}
     >
       {children}

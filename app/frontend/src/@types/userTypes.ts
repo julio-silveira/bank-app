@@ -14,4 +14,14 @@ export interface IFetchLoginMessage {
   statusText: string | undefined
 }
 
+export interface IAccount {
+  username: string
+  account: { balance: string }
+}
+
+export interface IAccountOutput {
+  username: string
+  balance: string
+}
+
 export type UserLogin = IFetchLoginMessage | void

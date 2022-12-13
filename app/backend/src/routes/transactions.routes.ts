@@ -1,36 +1,25 @@
 import { Router } from 'express'
-import TransactionController from '../controllers/transactions..controller'
-import ValidateJWT from '../auth/validateJWT'
+import TransactionController from '../controllers/transactions.controller'
+import JWT from '../auth/JWT'
 import TransactionMiddleware from '../middlewares/transactionMiddleware'
 
-const TRANSACTION_ROUTE = '/transactions/:accountId'
-const TRANSACTION_WITH_FILTERS_ROUTE = '/transactions/:accountId/filters'
+const TRANSACTION = '/transactions'
+const CREATE_TRANSACTION = '/transactions/create'
 
 const router = Router()
 
-const validateJWT = new ValidateJWT()
+const jwt = new JWT()
 
-const transactionController = new TransactionController()
-const transactionMiddleware = new TransactionMiddleware()
-
-router.get(
-  TRANSACTION_ROUTE,
-  validateJWT.tokenAuth,
-  transactionController.getAll
-)
+const tController = new TransactionController()
+const tMiddleware = new TransactionMiddleware()
 
 router.post(
-  TRANSACTION_ROUTE,
-  validateJWT.tokenAuth,
-  transactionMiddleware.bodyCheck,
-  transactionController.create
+  CREATE_TRANSACTION,
+  jwt.auth,
+  tMiddleware.bodyCheck,
+  tController.create
 )
 
-router.post(
-  TRANSACTION_WITH_FILTERS_ROUTE,
-  validateJWT.tokenAuth,
-  transactionMiddleware.filtersCheck,
-  transactionController.getAllWithFilters
-)
+router.post(TRANSACTION, jwt.auth, tMiddleware.filtersCheck, tController.getAll)
 
 export default router

@@ -4,7 +4,10 @@ import { userLogin, userRegister } from '../../helpers/userFetch'
 import { IUser } from '../../@types/userTypes'
 import AppContext from '../../context/AppContext'
 import { ContextType } from '../../@types/ContextTypes'
-import { IFetchLoginMessage } from '../../@types/taskTypes'
+import { IFetchMessage } from '../../@types/TransactionsTypes'
+import { Button, Typography, Paper, TextField, Box } from '@mui/material'
+import { Stack } from '@mui/system'
+import NGCASHLogo from '../../assets/NGCASHLogo.svg'
 
 const FORM_INITIAL_STATE = {
   username: '',
@@ -12,7 +15,7 @@ const FORM_INITIAL_STATE = {
 }
 
 export default function LoginForm() {
-  const { openModalWithContent } = useContext(AppContext) as ContextType
+  const { openAlertWithContent } = useContext(AppContext) as ContextType
 
   const navigate = useNavigate()
   const [isRegister, setIsRegister] = useState(false)
@@ -24,26 +27,24 @@ export default function LoginForm() {
   }
 
   const handleRegister = async () => {
-    const { message, status } = (await userRegister(
-      formData
-    )) as IFetchLoginMessage
+    const { message, status } = (await userRegister(formData)) as IFetchMessage
 
     if (status === 201 && message !== undefined) {
-      openModalWithContent(message)
+      openAlertWithContent(message, 'success')
       setIsRegister(false)
       setFormData(FORM_INITIAL_STATE)
     } else if (message !== undefined) {
-      openModalWithContent(message)
+      openAlertWithContent(message, 'error')
     }
   }
 
   const handleLogin = async () => {
-    const { message } = (await userLogin(formData)) as IFetchLoginMessage
+    const { message } = (await userLogin(formData)) as IFetchMessage
     if (!message) {
       setFormData(FORM_INITIAL_STATE)
-      navigate('/tasks')
+      navigate('/dashboard')
     } else {
-      openModalWithContent(message)
+      openAlertWithContent(message, 'error')
     }
   }
 
@@ -53,47 +54,78 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>{isRegister ? 'RegisterForm' : 'LoginForm'}</h3>
-      <label htmlFor="username">
-        <input
+    <Paper
+      elevation={2}
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column-reverse', md: 'row' },
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: { xs: '90%', sm: '40%', md: '25%', lg: '20%' },
+        py: 5,
+        px: 4
+      }}
+    >
+      <Stack
+        spacing={1}
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          textAlign: 'center'
+        }}
+      >
+        <Box sx={{ pb: 1 }}>
+          <Box sx={{ pb: 1 }}>
+            <img src={NGCASHLogo} alt="NG.CASH LOGO" />
+          </Box>
+          <Typography variant="h6" pb={2}>
+            {isRegister ? 'REGISTRE-SE' : 'LOGIN'}
+          </Typography>
+        </Box>
+        <TextField
+          label="Nome de usuário"
+          color="secondary"
+          size="small"
           onChange={handleChange}
           value={formData.username}
-          type="username"
           id="username"
-          placeholder="username"
         />
-      </label>
-      <label htmlFor="password">
-        <input
+        <TextField
+          label="Senha"
+          color="secondary"
+          size="small"
           onChange={handleChange}
           value={formData.password}
           type="password"
           id="password"
           placeholder="password"
         />
-      </label>
-      {isRegister ? (
-        <section>
-          <button type="submit">Registrar</button>
-          <span>
-            Deseja fazer login?
-            <button type="button" onClick={() => setIsRegister(false)}>
-              Voltar a página de login
-            </button>
-          </span>
-        </section>
-      ) : (
-        <section>
-          <button type="submit">Login</button>
-          <span>
-            Não tem conta?
-            <button type="button" onClick={() => setIsRegister(true)}>
-              Cadastre-se
-            </button>
-          </span>
-        </section>
-      )}
-    </form>
+
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{
+            bgcolor: 'black',
+            '&:hover': {
+              bgcolor: '#FF00FF',
+              color: 'white'
+            }
+          }}
+        >
+          {isRegister ? 'Registrar' : 'Entrar'}
+        </Button>
+        <Typography variant="body2">
+          {isRegister ? 'Já tem conta?' : ' Não tem conta?'}
+          <Button
+            variant="text"
+            color="secondary"
+            type="button"
+            onClick={() => setIsRegister(!isRegister)}
+          >
+            {isRegister ? 'Faça Login' : 'Cadastre-se'}
+          </Button>
+        </Typography>
+      </Stack>
+    </Paper>
   )
 }

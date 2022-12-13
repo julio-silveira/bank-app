@@ -9,6 +9,7 @@ import {
 import { hash, compare } from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
+import { CustomRequest } from '../interfaces/user.interface'
 
 const secret = process.env.JWT_SECRET || 'JWT'
 
@@ -30,12 +31,16 @@ export default class UserControler {
       throw new UnauthorizedError('Senha Incorreta')
     }
 
-    const token = jwt.sign({ data: { username: username } }, secret, {
-      expiresIn: '7d',
-      algorithm: 'HS256'
-    })
+    const token = jwt.sign(
+      { data: { username: user.username, accountId: user.accountId } },
+      secret,
+      {
+        expiresIn: '1d',
+        algorithm: 'HS256'
+      }
+    )
 
-    res.status(statusCodes.OK).json({ token, userId: user.id })
+    res.status(statusCodes.OK).json({ token })
   }
 
   public createUser = async (req: Request, res: Response) => {
@@ -50,8 +55,8 @@ export default class UserControler {
   }
 
   public getUser = async (req: Request, res: Response) => {
-    const userId = Number(req.params.userId)
-    const account = await this.userService.getUserById(userId)
+    const { accountId } = (req as CustomRequest).user
+    const account = await this.userService.getUserById(accountId)
     res.status(statusCodes.OK).json(account)
   }
 }
