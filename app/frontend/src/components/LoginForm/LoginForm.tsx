@@ -5,8 +5,7 @@ import { IUser } from '../../@types/userTypes'
 import AppContext from '../../context/AppContext'
 import { ContextType } from '../../@types/ContextTypes'
 import { IFetchMessage } from '../../@types/TransactionsTypes'
-import { Button, Typography, Paper, TextField, Box } from '@mui/material'
-import { Stack } from '@mui/system'
+import { Button, Typography, Paper, TextField, Box, Stack } from '@mui/material'
 import NGCASHLogo from '../../assets/NGCASHLogo.svg'
 
 const FORM_INITIAL_STATE = {
@@ -61,9 +60,9 @@ export default function LoginForm() {
         flexDirection: { xs: 'column-reverse', md: 'row' },
         justifyContent: 'space-around',
         alignItems: 'center',
-        width: { xs: '90%', sm: '40%', md: '25%', lg: '20%' },
-        py: 5,
-        px: 4
+        width: { xs: '90%', sm: '40%', md: '35%', lg: '25%' },
+        py: 3,
+        px: 2
       }}
     >
       <Stack
@@ -83,6 +82,7 @@ export default function LoginForm() {
           </Typography>
         </Box>
         <TextField
+          fullWidth
           label="Nome de usuário"
           color="secondary"
           size="small"
@@ -91,6 +91,7 @@ export default function LoginForm() {
           id="username"
         />
         <TextField
+          fullWidth
           label="Senha"
           color="secondary"
           size="small"

@@ -28,8 +28,9 @@ export default function Tasks() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center ',
+        justifyContent: 'center',
         width: '100%',
-        minHeight: '100vg'
+        minHeight: '100vh'
       }}
       component="main"
     >

@@ -40,28 +40,27 @@ const Header = () => {
       <img width="100px" src={NGCASHLogo} alt="NGlogo" />
       <Stack direction="row" spacing={2} sx={{ pe: 2, alignItems: 'center' }}>
         <Typography
-          color="secondary"
+          color="primary"
           sx={{ display: { sm: 'block', xs: 'none' } }}
           variant="body1"
         >
           {userInfo.username}
         </Typography>
-        <Typography color="secondary" variant="body1">
+        <Typography color="primary" variant="body1">
           {toBrl(userInfo.balance)}
         </Typography>
         <IconButton
           sx={{
             '&:hover': {
-              bgcolor: '#FF00FF',
               color: 'white',
               '&>*': {
-                color: 'white'
+                color: '#FF00FF'
               }
             }
           }}
           onClick={handleLogout}
         >
-          <LogoutIcon color="secondary" />
+          <LogoutIcon color="primary" />
         </IconButton>
       </Stack>
     </Paper>
