@@ -79,6 +79,7 @@ function TransactionModal() {
             label="Destinatário"
           />
           <TextField
+            type="number"
             onChange={handleValue}
             color="secondary"
             size="small"

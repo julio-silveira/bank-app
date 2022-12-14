@@ -9,11 +9,14 @@ export default class TaskControler {
 
   public getAll = async (req: Request, res: Response) => {
     const { accountId } = (req as CustomRequest).user
-    const { dateFilter, typeFilter } = req.body
+    const { dateFilter, typeFilter, startingDate, endingDate } = req.body
+    console.log(dateFilter)
     const transactionData: ITransactionFilters = {
       accountId,
       dateFilter: dateFilter || false,
-      typeFilter: typeFilter || false
+      typeFilter: typeFilter || false,
+      startingDate,
+      endingDate
     }
     const transactions = await this.transactionServices.getAll(transactionData)
     res.status(statusCodes.OK).json(transactions)

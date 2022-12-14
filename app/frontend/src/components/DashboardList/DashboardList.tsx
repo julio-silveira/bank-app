@@ -18,10 +18,10 @@ import {
 import { Stack } from '@mui/system'
 import React, { useContext, useState } from 'react'
 import { ContextType } from '../../@types/ContextTypes'
-import { IFetchFilteredOutput } from '../../@types/TransactionsTypes'
+import { ITransactionData } from '../../@types/TransactionsTypes'
 import AppContext from '../../context/AppContext'
 import toBrl from '../../helpers/toBRL'
-import { getFilteredTransactions } from '../../helpers/transactionsFetch'
+import { getTransactions } from '../../helpers/transactionsFetch'
 
 const headCells = ['De', 'Para', 'Valor', 'Data']
 const TasksList: React.FC = () => {
@@ -29,7 +29,8 @@ const TasksList: React.FC = () => {
     AppContext
   ) as ContextType
   const [typeFilter, setTypeFilter] = useState<string | false>(false)
-  const [dateFilter, setDateFilter] = useState<string | false>(false)
+  const [startDateFilter, setStartDateFilter] = useState<string | false>(false)
+  const [endDateFilter, setEndDateFilter] = useState<string | false>(false)
   const [showDateInput, setShowDateInput] = useState(false)
 
   const handleTypeFilter = (
@@ -42,25 +43,34 @@ const TasksList: React.FC = () => {
     }
   }
 
-  const handleDateFilter = (
+  const handleStartFilter = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     if (showDateInput === false) {
-      setDateFilter(false)
+      setStartDateFilter(false)
     } else {
-      setDateFilter((event.target as HTMLInputElement).value)
+      setStartDateFilter((event.target as HTMLInputElement).value)
+    }
+  }
+
+  const handleEndFilter = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    if (showDateInput === false) {
+      setEndDateFilter(false)
+    } else {
+      setEndDateFilter((event.target as HTMLInputElement).value)
     }
   }
 
   const handleSearch = async () => {
-    const payload = (await getFilteredTransactions(
+    const data = (await getTransactions(
       typeFilter,
-      dateFilter
-    )) as unknown as IFetchFilteredOutput
-    console.log(payload?.data, payload?.status)
-
-    if (payload.data !== undefined) {
-      setUserTransactions(payload.data)
+      startDateFilter,
+      endDateFilter
+    )) as unknown as ITransactionData[]
+    if (data !== undefined) {
+      setUserTransactions(data)
     }
   }
 
@@ -73,54 +83,71 @@ const TasksList: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        maxWidth: '90%'
+        maxWidth: '80%'
       }}
       component="section"
     >
       <FormControl
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          p: 2
+        }}
       >
         <FormLabel>Filtro de operações</FormLabel>
         <RadioGroup row onChange={handleTypeFilter}>
           <FormControlLabel
             value="all"
-            control={<Radio color="secondary" />}
+            control={<Radio size="small" color="secondary" />}
             label="Todas"
           />
           <FormControlLabel
             value="credit"
-            control={<Radio color="secondary" />}
+            control={<Radio size="small" color="secondary" />}
             label="Entrada"
           />
           <FormControlLabel
             value="debit"
-            control={<Radio color="secondary" />}
+            control={<Radio size="small" color="secondary" />}
             label="Saída"
           />
         </RadioGroup>
-        <Stack direction="row">
+        <Stack spacing={2} sx={{ alignItems: 'center' }}>
           <FormControlLabel
             onChange={() => setShowDateInput(!showDateInput)}
-            control={<Switch color="secondary" />}
+            control={<Switch size="small" color="secondary" />}
             label="Datas"
           />
+
           {showDateInput && (
-            <TextField
-              onChange={handleDateFilter}
-              size="small"
-              type="date"
-              color="secondary"
-            />
+            <Stack spacing={1}>
+              <TextField
+                onChange={handleStartFilter}
+                size="small"
+                variant="filled"
+                type="date"
+                color="secondary"
+                helperText="Inicio"
+              />
+              <TextField
+                onChange={handleEndFilter}
+                size="small"
+                variant="filled"
+                type="date"
+                color="secondary"
+                helperText="Fim"
+              />
+            </Stack>
           )}
         </Stack>
         <Button
           sx={{ my: 1 }}
-          fullWidth
           color="secondary"
           variant="contained"
           onClick={handleSearch}
         >
-          Procurar
+          Filtrar
         </Button>
       </FormControl>
       <TableContainer>
