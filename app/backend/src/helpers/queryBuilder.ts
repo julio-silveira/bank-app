@@ -20,53 +20,42 @@ WHERE `
 
 const debitQuery = `d.account_id = :accountId`
 const creditQuery = `c.account_id = :accountId`
-const dateQuery = `t.created_at >= :dateFilter`
+const startingDateQuery = `t.created_at >= :startingDate AND`
+const endingDateQuery = 't.created_at <= :endingDate AND'
+const inBetweenQuery =
+  '(t.created_at BETWEEN :startingDate AND :endingDate) AND'
+
+const getTransactionType = (typeFilter: string | false): string => {
+  if (typeFilter === 'credit') {
+    return creditQuery
+  } else if (typeFilter === 'debit') {
+    return debitQuery
+  } else {
+    return `(${debitQuery} OR ${creditQuery})`
+  }
+}
+
+const getDateQuery = (dateFilters: string | false): string => {
+  if (dateFilters === 'start') {
+    return startingDateQuery
+  } else if (dateFilters === 'end') {
+    return endingDateQuery
+  } else if (dateFilters === 'both') {
+    return inBetweenQuery
+  } else return ''
+}
 
 const queryBuilder = (transactionData: ITransactionFilters): IQueryBuilder => {
-  const { accountId, dateFilter, typeFilter } = transactionData
-  let rawQuery = ''
-  let options = {
-    replacements: {},
+  const { accountId, dateFilter, typeFilter, startingDate, endingDate } =
+    transactionData
+
+  const type = getTransactionType(typeFilter)
+  const date = getDateQuery(dateFilter)
+  const rawQuery = `${baseQuery} ${date} ${type} `
+  const options = {
+    replacements: { accountId, startingDate, endingDate },
     type: QueryTypes.SELECT
   }
-  if (dateFilter === false && typeFilter === 'credit') {
-    rawQuery = `${baseQuery} ${creditQuery}`
-    options = {
-      replacements: { accountId },
-      type: QueryTypes.SELECT
-    }
-  } else if (dateFilter === false && typeFilter === 'debit') {
-    rawQuery = `${baseQuery} ${debitQuery}`
-    options = {
-      replacements: { accountId },
-      type: QueryTypes.SELECT
-    }
-  } else if (typeof dateFilter === 'string' && typeFilter === 'credit') {
-    rawQuery = `${baseQuery} ${dateQuery} AND ${creditQuery}`
-    options = {
-      replacements: { dateFilter, accountId },
-      type: QueryTypes.SELECT
-    }
-  } else if (typeof dateFilter === 'string' && typeFilter === 'debit') {
-    rawQuery = `${baseQuery} ${dateQuery} AND ${debitQuery}`
-    options = {
-      replacements: { dateFilter, accountId },
-      type: QueryTypes.SELECT
-    }
-  } else if (typeof dateFilter === 'string' && typeFilter === false) {
-    ;(rawQuery = `${baseQuery} ${dateQuery} AND ( ${creditQuery} OR ${debitQuery})`),
-      (options = {
-        replacements: { dateFilter, accountId },
-        type: QueryTypes.SELECT
-      })
-  } else if (!dateFilter && !typeFilter) {
-    ;(rawQuery = `${baseQuery}  ${creditQuery} OR ${debitQuery}`),
-      (options = {
-        replacements: { accountId },
-        type: QueryTypes.SELECT
-      })
-  }
-
   return { rawQuery, options }
 }
 

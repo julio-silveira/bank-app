@@ -18,8 +18,10 @@ export interface ITransactionList {
 
 export interface ITransactionFilters {
   accountId: number
-  dateFilter: false | string
+  dateFilter: false | 'start' | 'end' | 'both'
   typeFilter: false | 'credit' | 'debit'
+  startingDate?: string
+  endingDate?: string
 }
 
 export interface IQueryBuilder {

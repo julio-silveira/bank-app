@@ -25,8 +25,6 @@ export const userRegister = async (userData: IUser): Promise<UserLogin> => {
     })
 
     const { message } = await response.json()
-    console.log(message)
-
     return { message, status: response.status, statusText: response.statusText }
   } catch (error) {
     console.error(error)
@@ -36,8 +34,6 @@ export const userRegister = async (userData: IUser): Promise<UserLogin> => {
 export const getAccountInfo = async (): Promise<IAccountOutput | void> => {
   try {
     const token = getToken()
-    console.log(token)
-
     const response = await fetch(`http://localhost:8000/user/`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', authorization: token }

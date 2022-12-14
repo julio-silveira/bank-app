@@ -71,54 +71,71 @@ const TasksList: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        maxWidth: '90%'
+        maxWidth: '80%'
       }}
       component="section"
     >
       <FormControl
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          p: 2
+        }}
       >
         <FormLabel>Filtro de operações</FormLabel>
         <RadioGroup row onChange={handleTypeFilter}>
           <FormControlLabel
             value="all"
-            control={<Radio color="secondary" />}
+            control={<Radio size="small" color="secondary" />}
             label="Todas"
           />
           <FormControlLabel
             value="credit"
-            control={<Radio color="secondary" />}
+            control={<Radio size="small" color="secondary" />}
             label="Entrada"
           />
           <FormControlLabel
             value="debit"
-            control={<Radio color="secondary" />}
+            control={<Radio size="small" color="secondary" />}
             label="Saída"
           />
         </RadioGroup>
-        <Stack direction="row">
+        <Stack spacing={2} sx={{ alignItems: 'center' }}>
           <FormControlLabel
             onChange={() => setShowDateInput(!showDateInput)}
-            control={<Switch color="secondary" />}
+            control={<Switch size="small" color="secondary" />}
             label="Datas"
           />
+
           {showDateInput && (
-            <TextField
-              onChange={handleDateFilter}
-              size="small"
-              type="date"
-              color="secondary"
-            />
+            <Stack spacing={1}>
+              <TextField
+                onChange={handleDateFilter}
+                size="small"
+                variant="filled"
+                type="date"
+                color="secondary"
+                helperText="Inicio"
+              />
+              <TextField
+                onChange={handleDateFilter}
+                size="small"
+                variant="filled"
+                type="date"
+                color="secondary"
+                helperText="Fim"
+              />
+            </Stack>
           )}
         </Stack>
         <Button
           sx={{ my: 1 }}
-          fullWidth
           color="secondary"
           variant="contained"
           onClick={handleSearch}
         >
-          Procurar
+          Filtrar
         </Button>
       </FormControl>
       <TableContainer>

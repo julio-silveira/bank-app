@@ -1,7 +1,6 @@
-import { QueryTypes, Transaction } from 'sequelize'
+import { Transaction } from 'sequelize'
 import sequelize from '../database/models'
 import {
-  IQueryBuilder,
   ITransaction,
   ITransactionFilters,
   ITransactionList
@@ -55,9 +54,8 @@ class TaskServices {
   ): Promise<ITransactionList[] | undefined> {
     const { rawQuery, options } = queryBuilder(transactionData)
     if (rawQuery === '') {
-      throw new BadRequestError('Erro com a solicitação')
+      throw new BadRequestError('Erro na solicitação')
     }
-
     const accountTransactions = await sequelize.query(rawQuery, options)
     return accountTransactions as unknown as ITransactionList[]
   }
