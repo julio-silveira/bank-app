@@ -29,7 +29,8 @@ const TasksList: React.FC = () => {
     AppContext
   ) as ContextType
   const [typeFilter, setTypeFilter] = useState<string | false>(false)
-  const [dateFilter, setDateFilter] = useState<string | false>(false)
+  const [startDateFilter, setStartDateFilter] = useState<string | false>(false)
+  const [endDateFilter, setEndDateFilter] = useState<string | false>(false)
   const [showDateInput, setShowDateInput] = useState(false)
 
   const handleTypeFilter = (
@@ -42,20 +43,31 @@ const TasksList: React.FC = () => {
     }
   }
 
-  const handleDateFilter = (
+  const handleStartFilter = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     if (showDateInput === false) {
-      setDateFilter(false)
+      setStartDateFilter(false)
     } else {
-      setDateFilter((event.target as HTMLInputElement).value)
+      setStartDateFilter((event.target as HTMLInputElement).value)
+    }
+  }
+
+  const handleEndFilter = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    if (showDateInput === false) {
+      setEndDateFilter(false)
+    } else {
+      setEndDateFilter((event.target as HTMLInputElement).value)
     }
   }
 
   const handleSearch = async () => {
     const data = (await getTransactions(
       typeFilter,
-      dateFilter
+      startDateFilter,
+      endDateFilter
     )) as unknown as ITransactionData[]
     if (data !== undefined) {
       setUserTransactions(data)
@@ -111,7 +123,7 @@ const TasksList: React.FC = () => {
           {showDateInput && (
             <Stack spacing={1}>
               <TextField
-                onChange={handleDateFilter}
+                onChange={handleStartFilter}
                 size="small"
                 variant="filled"
                 type="date"
@@ -119,7 +131,7 @@ const TasksList: React.FC = () => {
                 helperText="Inicio"
               />
               <TextField
-                onChange={handleDateFilter}
+                onChange={handleEndFilter}
                 size="small"
                 variant="filled"
                 type="date"

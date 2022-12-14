@@ -1,16 +1,25 @@
 import { IFetchMessage, ITransactionData } from '../@types/TransactionsTypes'
 import { getToken } from './localStorage'
+import setDateFilter from './setDateFilter'
 
 export const getTransactions = async (
   typeFilter: string | false,
-  dateFilter: string | false
+  startingDate?: string | false,
+  endingDate?: string | false
 ): Promise<ITransactionData | void> => {
   try {
     const token = getToken()
+    const dateFilter = setDateFilter(startingDate, endingDate)
+    const filterData = {
+      dateFilter,
+      typeFilter,
+      startingDate: startingDate || false,
+      endingDate: endingDate || false
+    }
     const response = await fetch(`http://localhost:8000/transactions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', authorization: token },
-      body: JSON.stringify({ typeFilter, dateFilter })
+      body: JSON.stringify(filterData)
     })
     const data = await response.json()
     return data

@@ -22,7 +22,9 @@ export interface IFetchFilteredOutput {
   data: ITransactionData[]
 }
 
-export interface IFilters {
-  typeFilter: string | false | undefined
-  dateFilter: string | false | undefined
+export interface ITransactionFilters {
+  accountId: number
+  typeFilter: false | 'credit' | 'debit'
+  startingDate?: string
+  endingDate?: string
 }
