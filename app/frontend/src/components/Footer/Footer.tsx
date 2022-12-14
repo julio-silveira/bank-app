@@ -8,26 +8,19 @@ const Footer: React.FC = () => {
   const { setOpenModal } = useContext(AppContext) as ContextType
 
   return (
-    <Box
-      pb={0}
+    <Fab
       sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        width: '95%',
         position: 'fixed',
-        bottom: 0
+        bottom: '10px',
+        right: '10px'
       }}
-      component="footer"
+      color="secondary"
+      type="button"
+      onClick={() => setOpenModal(true)}
+      aria-label="add"
     >
-      <Fab
-        color="secondary"
-        type="button"
-        onClick={() => setOpenModal(true)}
-        aria-label="add"
-      >
-        <AddIcon />
-      </Fab>
-    </Box>
+      <AddIcon />
+    </Fab>
   )
 }
 
