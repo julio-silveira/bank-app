@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express'
+import 'dotenv/config'
 import statusCodes from './statusCodes'
 import 'express-async-errors'
 import UserRoutes from './routes/user.routes'
@@ -9,7 +10,7 @@ const app = express()
 
 app.use(express.json())
 
-const PORT = 8000
+const PORT = process.env.PORT
 
 app.get('/', (req: Request, res: Response) => {
   res.status(statusCodes.OK).send('NG.CASH SERVER ON')
