@@ -2,8 +2,7 @@ import { IUser, IAccount, UserLogin, IAccountOutput } from '../@types/userTypes'
 import { getToken, saveToken } from './localStorage'
 
 const baseUrl =
-  `${import.meta.env.VITE_API}:${import.meta.env.PORT}` ||
-  'http://localhost:8000'
+  `${import.meta.env.VITE_API}:${process.env.PORT}` || 'http://localhost:8000'
 
 export const userLogin = async (userData: IUser): Promise<UserLogin> => {
   try {
