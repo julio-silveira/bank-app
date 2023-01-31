@@ -1,9 +1,11 @@
 import { IUser, IAccount, UserLogin, IAccountOutput } from '../@types/userTypes'
 import { getToken, saveToken } from './localStorage'
 
+const baseUrl = import.meta.env.VITE_API || 'http://localhost:8000'
+
 export const userLogin = async (userData: IUser): Promise<UserLogin> => {
   try {
-    const response = await fetch('http://localhost:8000/login', {
+    const response = await fetch(`${baseUrl}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
@@ -18,7 +20,7 @@ export const userLogin = async (userData: IUser): Promise<UserLogin> => {
 
 export const userRegister = async (userData: IUser): Promise<UserLogin> => {
   try {
-    const response = await fetch('http://localhost:8000/register', {
+    const response = await fetch(`${baseUrl}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
@@ -34,7 +36,7 @@ export const userRegister = async (userData: IUser): Promise<UserLogin> => {
 export const getAccountInfo = async (): Promise<IAccountOutput | void> => {
   try {
     const token = getToken()
-    const response = await fetch(`http://localhost:8000/user/`, {
+    const response = await fetch(`${baseUrl}/user`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', authorization: token }
     })

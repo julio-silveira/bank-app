@@ -13,6 +13,8 @@ const FORM_INITIAL_STATE = {
   password: ''
 }
 
+const baseUrl = import.meta.env
+
 export default function LoginForm() {
   const { openAlertWithContent } = useContext(AppContext) as ContextType
 
@@ -49,6 +51,8 @@ export default function LoginForm() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
+    console.log(baseUrl)
+
     isRegister ? await handleRegister() : await handleLogin()
   }
 

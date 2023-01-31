@@ -10,12 +10,7 @@ services:
     volumes:
       - ./frontend/src:/app/frontend/src
     depends_on:
-      backend:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3000"]
-      timeout: 10s
-      retries: 5
+      - backend
   backend:
     container_name: NG.CASH-backend
     build: ./backend
@@ -27,14 +22,9 @@ services:
     volumes:
       - ./backend/src:/app/backend/src
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     env_file:
       - ../.env/
-    healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:8000"]
-      timeout: 10s
-      retries: 5
     networks:
       - postgres
   db:
@@ -50,10 +40,6 @@ services:
     ports:
       - 5432:5432
     restart: 'always'
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      timeout: 10s
-      retries: 5
     networks:
       - postgres
     cap_add:

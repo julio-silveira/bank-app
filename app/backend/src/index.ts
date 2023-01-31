@@ -10,7 +10,7 @@ const app = express()
 
 app.use(express.json())
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 8000
 
 app.get('/', (req: Request, res: Response) => {
   res.status(statusCodes.OK).send('NG.CASH SERVER ON')
