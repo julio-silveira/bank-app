@@ -2,6 +2,8 @@ import { IFetchMessage, ITransactionData } from '../@types/TransactionsTypes'
 import { getToken } from './localStorage'
 import setDateFilter from './setDateFilter'
 
+const baseUrl = `${import.meta.env.VITE_API}` || 'http://localhost:8000'
+
 export const getTransactions = async (
   typeFilter: string | false,
   startingDate?: string | false,
@@ -16,7 +18,7 @@ export const getTransactions = async (
       startingDate: startingDate || false,
       endingDate: endingDate || false
     }
-    const response = await fetch(`http://localhost:8000/transactions`, {
+    const response = await fetch(`${baseUrl}/transactions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', authorization: token },
       body: JSON.stringify(filterData)
@@ -34,7 +36,7 @@ export const postTransaction = async (
 ): Promise<IFetchMessage | void> => {
   try {
     const token = getToken()
-    const response = await fetch(`http://localhost:8000/transactions/create`, {
+    const response = await fetch(`${baseUrl}/transactions/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
