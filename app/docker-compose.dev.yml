@@ -9,6 +9,8 @@ services:
     working_dir: /app/frontend
     volumes:
       - ./frontend/src:/app/frontend/src
+    env_file:
+      - ../.env/
     depends_on:
       - backend
   backend:

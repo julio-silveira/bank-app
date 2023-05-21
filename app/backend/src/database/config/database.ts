@@ -9,11 +9,7 @@ const config: Options = {
   port: Number(process.env.PGPORT) || 5432,
   dialect: 'postgres',
   dialectOptions: {
-    decimalNumbers: true,
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
+    decimalNumbers: true
   }
 }
 
