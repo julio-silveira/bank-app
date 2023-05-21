@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const JWT_1 = __importDefault(require("../auth/JWT"));
+const users_controller_1 = __importDefault(require("../controllers/users.controller"));
+const userMiddleware_1 = __importDefault(require("../middlewares/userMiddleware"));
+const LOGIN_ROUTE = '/login';
+const CREATE_USER_ROUTE = '/register';
+const USER_ROUTE = '/user';
+const router = (0, express_1.Router)();
+const usersController = new users_controller_1.default();
+const userMiddleware = new userMiddleware_1.default();
+const jwt = new JWT_1.default();
+router.get(USER_ROUTE, jwt.auth, usersController.getUser);
+router.post(LOGIN_ROUTE, userMiddleware.loginCredentials, usersController.userLogin);
+router.post(CREATE_USER_ROUTE, userMiddleware.userRegisterCredentials, usersController.createUser);
+exports.default = router;
