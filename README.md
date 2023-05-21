@@ -1,4 +1,4 @@
-# NG.CASH Wallet
+# Bank App
 
 # 🎯Objetivo
 
@@ -30,7 +30,7 @@ Estruturar uma aplicação web fullstack, dockerizada, cujo objetivo seja possib
 
 1. Clone o repositório repositório para sua máquina utilizando o comando: 
   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`git clone git@github.com:julio-silveira/NG.CASH-CHALLENGE.git`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`git clone git@github.com:julio-silveira/bank-app.git`
 
 2. Após finalizar o download, crie um arquivo .env na raiz do projeto, recomendo utilizar o arquivo `.envexample` como template;
 
