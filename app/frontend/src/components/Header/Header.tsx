@@ -37,7 +37,7 @@ const Header = () => {
       }}
       component="header"
     >
-      <img width="100px" src={NGCASHLogo} alt="NGlogo" />
+      <img width="30px" src={NGCASHLogo} alt="NGlogo" />
       <Stack direction="row" spacing={2} sx={{ pe: 2, alignItems: 'center' }}>
         <Typography
           color="primary"
@@ -49,17 +49,7 @@ const Header = () => {
         <Typography color="primary" variant="body1">
           {toBrl(userInfo.balance)}
         </Typography>
-        <IconButton
-          sx={{
-            '&:hover': {
-              color: 'white',
-              '&>*': {
-                color: '#FF00FF'
-              }
-            }
-          }}
-          onClick={handleLogout}
-        >
+        <IconButton onClick={handleLogout}>
           <LogoutIcon color="primary" />
         </IconButton>
       </Stack>

@@ -1,8 +1,8 @@
 version: '3.9'
-name: NG.CASH-WALLET
+name: bank-app
 services:
   frontend:
-    container_name: NG.CASH-frontend
+    container_name: bank-app-front
     build: ./frontend
     ports:
       - 3000:3000
@@ -12,7 +12,7 @@ services:
     depends_on:
       - backend
   backend:
-    container_name: NG.CASH-backend
+    container_name: bank-app-back
     build: ./backend
     ports:
       - 8000:8000
@@ -29,7 +29,7 @@ services:
       - postgres
   db:
     image: postgres:14.1-alpine
-    container_name: NG.CASH-db
+    container_name: bank-app-db
     platform: linux/x86_64
     environment:
       POSTGRES_USER: postgres
@@ -46,22 +46,22 @@ services:
       - SYS_NICE
 
   pgadmin:
-    container_name: NG.CASH-pgadmin
+    container_name: bank-app-pgadmin
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
-      PGADMIN_DEFAULT_PASSWORD: "admin1234"
+      PGADMIN_DEFAULT_EMAIL: 'admin@admin.com'
+      PGADMIN_DEFAULT_PASSWORD: 'admin1234'
     volumes:
-     - pgadmin-data:/var/lib/pgadmin
+      - pgadmin-data:/var/lib/pgadmin
     ports:
-      - "5050:80"
+      - '5050:80'
     networks:
       - postgres
     restart: unless-stopped
 
 volumes:
- db-data:
- pgadmin-data:
+  db-data:
+  pgadmin-data:
 networks:
   postgres:
     driver: bridge

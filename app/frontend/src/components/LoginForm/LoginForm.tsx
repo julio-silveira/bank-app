@@ -74,9 +74,13 @@ export default function LoginForm() {
         }}
       >
         <Box sx={{ pb: 1 }}>
-          <Box sx={{ pb: 1 }}>
-            <img src={NGCASHLogo} alt="NG.CASH LOGO" />
-          </Box>
+          <Box
+            component="img"
+            sx={{ width: '100px' }}
+            src={NGCASHLogo}
+            alt="LOGO"
+          />
+
           <Typography variant="h6" pb={2}>
             {isRegister ? 'REGISTRE-SE' : 'LOGIN'}
           </Typography>
@@ -102,17 +106,7 @@ export default function LoginForm() {
           placeholder="password"
         />
 
-        <Button
-          variant="contained"
-          type="submit"
-          sx={{
-            bgcolor: 'black',
-            '&:hover': {
-              bgcolor: '#FF00FF',
-              color: 'white'
-            }
-          }}
-        >
+        <Button variant="contained" type="submit">
           {isRegister ? 'Registrar' : 'Entrar'}
         </Button>
         <Typography variant="body2">

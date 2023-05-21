@@ -13,7 +13,7 @@ app.use(express.json())
 const PORT = process.env.PORT || 8000
 
 app.get('/', (req: Request, res: Response) => {
-  res.status(statusCodes.OK).send('NG.CASH SERVER ON')
+  res.status(statusCodes.OK).send('SERVER ON')
 })
 app.use(cors())
 app.use(UserRoutes)
@@ -21,7 +21,6 @@ app.use(TransactionRoutes)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   const { name, message, details } = err as any
-  console.log(`name: ${name}`)
 
   switch (name) {
     case 'BadRequestError':

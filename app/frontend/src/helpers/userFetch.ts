@@ -1,7 +1,7 @@
 import { IUser, IAccount, UserLogin, IAccountOutput } from '../@types/userTypes'
 import { getToken, saveToken } from './localStorage'
 
-const baseUrl = `${import.meta.env.VITE_API}` || 'http://localhost:8000'
+const baseUrl = import.meta.env.VITE_API || 'http://localhost:8000'
 
 export const userLogin = async (userData: IUser): Promise<UserLogin> => {
   try {
@@ -10,6 +10,7 @@ export const userLogin = async (userData: IUser): Promise<UserLogin> => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
     })
+
     const { token, message } = await response.json()
     saveToken(token)
     return { message, status: response.status, statusText: response.statusText }
