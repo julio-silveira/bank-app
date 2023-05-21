@@ -2,7 +2,7 @@ import { IFetchMessage, ITransactionData } from '../@types/TransactionsTypes'
 import { getToken } from './localStorage'
 import setDateFilter from './setDateFilter'
 
-const baseUrl = `${import.meta.env.VITE_API}` || 'http://localhost:8000'
+const baseUrl = import.meta.env.VITE_API || 'http://localhost:8000'
 
 export const getTransactions = async (
   typeFilter: string | false,

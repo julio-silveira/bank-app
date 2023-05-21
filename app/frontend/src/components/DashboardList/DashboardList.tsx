@@ -1,25 +1,22 @@
 import React from 'react'
-import { Paper } from '@mui/material'
+import { Container, Paper } from '@mui/material'
 import Filters from './Filters'
 import TransactionsTable from './TransactionsTable'
 
 const TasksList: React.FC = () => {
   return (
-    <Paper
+    <Container
+      maxWidth="xs"
+      component={Paper}
       sx={{
         my: 10,
         pb: 4,
-        px: { xs: 0, md: 2 },
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        maxWidth: '80%'
+        alignItems: 'center'
       }}
-      component="section"
     >
       <Filters />
       <TransactionsTable />
-    </Paper>
+    </Container>
   )
 }
 

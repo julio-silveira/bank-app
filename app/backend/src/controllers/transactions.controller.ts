@@ -10,7 +10,6 @@ export default class TaskControler {
   public getAll = async (req: Request, res: Response) => {
     const { accountId } = (req as CustomRequest).user
     const { dateFilter, typeFilter, startingDate, endingDate } = req.body
-    console.log(dateFilter)
     const transactionData: ITransactionFilters = {
       accountId,
       dateFilter: dateFilter || false,
