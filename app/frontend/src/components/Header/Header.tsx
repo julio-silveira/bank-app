@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { IconButton, Paper, Typography } from '@mui/material'
-import NGCASHLogo from '../../assets/NGCASHLogo.svg'
+import logo from '../../assets/logo.svg'
 import { Stack } from '@mui/system'
 import AppContext from '../../context/AppContext'
 import { ContextType } from '../../@types/ContextTypes'
@@ -37,7 +37,7 @@ const Header = () => {
       }}
       component="header"
     >
-      <img width="30px" src={NGCASHLogo} alt="NGlogo" />
+      <img width="50px" src={logo} alt="logo" />
       <Stack direction="row" spacing={2} sx={{ pe: 2, alignItems: 'center' }}>
         <Typography
           color="primary"

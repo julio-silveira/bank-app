@@ -6,7 +6,7 @@ import AppContext from '../../context/AppContext'
 import { ContextType } from '../../@types/ContextTypes'
 import { IFetchMessage } from '../../@types/TransactionsTypes'
 import { Button, Typography, Paper, TextField, Box, Stack } from '@mui/material'
-import NGCASHLogo from '../../assets/NGCASHLogo.svg'
+import logo from '../../assets/logo.svg'
 
 const FORM_INITIAL_STATE = {
   username: '',
@@ -74,12 +74,7 @@ export default function LoginForm() {
         }}
       >
         <Box sx={{ pb: 1 }}>
-          <Box
-            component="img"
-            sx={{ width: '100px' }}
-            src={NGCASHLogo}
-            alt="LOGO"
-          />
+          <Box component="img" sx={{ width: '100px' }} src={logo} alt="LOGO" />
 
           <Typography variant="h6" pb={2}>
             {isRegister ? 'REGISTRE-SE' : 'LOGIN'}
