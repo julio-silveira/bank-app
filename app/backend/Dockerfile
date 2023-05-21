@@ -10,8 +10,6 @@ COPY . .
 
 EXPOSE 8000
 
-RU
-
 ENTRYPOINT [ "npm" ]
 
 CMD ["start"]
