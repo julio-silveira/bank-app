@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npx -y tsc && npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
-    "start": "npm run build && node ./dist/index.js",
+    "start": "npm run build && node ./build/index.js",
     "dev": "tsnd ./src/index.ts",
     "build": "tsc",
     "lint": "eslint 'src/**/*.{js,jsx}'",
